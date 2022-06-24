@@ -24,6 +24,7 @@ export const RoutesPage = () => {
     return (
         <div>
             <Routes>
+                <Route path={'/'} element={<Main/>}/>
                 <Route path={PATH.MAIN} element={<Main/>}/>
                 <Route path={PATH.LOGIN} element={<Login/>}/>
                 <Route path={PATH.NEW_PASSWORD} element={<NewPassword/>}/>
