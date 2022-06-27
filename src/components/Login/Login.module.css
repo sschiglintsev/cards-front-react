@@ -1,0 +1,28 @@
+.loginContainer {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 413px;
+    height: 600px;
+}
+.labelCards {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginTitle {
+
+    margin-bottom: 15px;
+    margin-top: 15px;
+
+    font-size: 20px;
+
+}
+
+.loginSingIn {
+    margin-bottom: 15px;
+
+    font-size: 15px;
+}
