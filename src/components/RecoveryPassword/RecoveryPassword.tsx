@@ -1,25 +1,39 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import style from './RecoveryPassword.module.css';
-import { recoveryApi } from '../../VladApi/Api';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { recoveryPasswordAC, recoveryPasswordTC } from '../../Redux/RecoveryPasswordReducer';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from '../../Redux/Store';
+import { useNavigate } from "react-router-dom";
+import { PATH } from '../Routes/Routes';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 interface State {
 	email: string;
-  }
+}
 
 export const RecoveryPassword: FC = () => {
+	const dispatch = useDispatch();
+	const info = useSelector<AppRootStateType, string>(state => state.RecoveryPassword.info);
+	const error = useSelector<AppRootStateType, string>(state => state.RecoveryPassword.error);
+	const isLoading = useSelector<AppRootStateType, boolean>(state => state.RecoveryPassword.isLoading);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (info !== '') {
+			navigate(PATH.CHECK_EMAIL);
+			dispatch(recoveryPasswordAC(''));
+		}
+	}, [info]);
+
 	const onRecoveryButtonClick = (email: string) => {
-		recoveryApi.recoveryPassword({
-			email,
-			message: `<div style="background-color: lime; padding: 15px">
-					password recovery link: 
-					<a href='http://localhost:3000/#/set-new-password/$token$'>
-					link</a>
-			</div>`
-		});
+		dispatch<any>(recoveryPasswordTC(email))
 	};
 
 	const [values, setValues] = React.useState<State>({
@@ -37,7 +51,7 @@ export const RecoveryPassword: FC = () => {
 			<h2 className={style.forgotPasswordTitle}>Forgot your password?</h2>
 
 		<FormControl sx={{ m: 0, width: '347px' }} variant="outlined">
-          <InputLabel sx={{marginLeft: '-14px'}} htmlFor="outlined-adornment-password">Email</InputLabel>
+          <InputLabel sx={{marginLeft: '-14px', color: error ? 'red' : ''}} htmlFor="outlined-adornment-password">{error || 'Email'}</InputLabel>
           <Input
             id="outlined-adornment-password"
             type='text'
@@ -45,16 +59,16 @@ export const RecoveryPassword: FC = () => {
             onChange={handleChange('email')}
           />
         </FormControl>
-
 		<p className={style.instructions}>Enter your email address and we will send you further instructions </p>
 						
-			<Button
+			<LoadingButton
+				loading={isLoading}
+				variant="contained"
 				sx={{backgroundColor: '#21268F', width: '266px', borderRadius: '30px'}}
 				type="submit"
-				variant='contained'
 				onClick={() => onRecoveryButtonClick(values.email)}>
 				Send Instructions
-			</Button>
+			</LoadingButton>
 
 					<div className={style.recoveryPasswordFooter}>
 						<p>Did you remember your password?</p>

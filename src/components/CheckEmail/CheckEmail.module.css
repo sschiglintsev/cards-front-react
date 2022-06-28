@@ -1,7 +1,7 @@
 .checkEmailWrapper {
     width: 413px;
     height: 468px;
-    /* margin: 0 auto; */
+    margin: 15% auto;
     display: flex;
     align-items: center;
     flex-direction: column;

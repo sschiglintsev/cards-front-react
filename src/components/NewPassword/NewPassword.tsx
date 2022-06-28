@@ -8,7 +8,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import style from './NewPassword.module.css';
 import { Button } from '@mui/material';
-import { recoveryApi } from '../../VladApi/Api';
+import { recoveryApi } from '../../api/Api';
 
 interface State {
   password: string;
@@ -40,7 +40,7 @@ export const NewPassword: React.FC = () => {
   const onSubmitButton = () => {
     recoveryApi.setNewPassword({
         password: values.password,
-        resetPasswordToken: 'asdjghaskldjh3'
+        resetPasswordToken: 'token'
     }).then(data => console.log(data))
   };
 
