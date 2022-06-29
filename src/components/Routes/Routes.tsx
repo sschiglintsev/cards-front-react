@@ -8,6 +8,7 @@ import {RecoveryPassword} from "../RecoveryPassword/RecoveryPassword";
 import {Registration} from "../Registration/Registration";
 import {Profile} from "../Profile/Profile";
 import {Test} from "../Test/Test";
+import { CheckEmail } from '../CheckEmail/CheckEmail';
 
 export const PATH = {
     MAIN: '/main',
@@ -17,7 +18,8 @@ export const PATH = {
     REGISTRATION:'/registration',
     PROFILE:'/profile',
     RECOVERY_PASSWORD:'/recovery-password',
-    TEST:'/test'
+    TEST:'/test',
+    CHECK_EMAIL: '/check-email',
 }
 
 export const RoutesPage = () => {
@@ -33,6 +35,7 @@ export const RoutesPage = () => {
                 <Route path={PATH.PROFILE} element={<Profile/>}/>
                 <Route path={PATH.ERROR} element={<Error404/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
+                <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
                 <Route path="*" element={<Navigate to="/error404"/>}/>
             </Routes>
         </div>
