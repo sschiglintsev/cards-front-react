@@ -2,7 +2,7 @@ import React from 'react';
 import Paper from "@mui/material/Paper";
 import style from "./Login.module.css"
 import TextField from "@mui/material/TextField";
-import {Button} from "@mui/material";
+import { FormControl, FormGroup, Grid} from "@mui/material";
 import {PATH} from "../Routes/Routes";
 import {NavLink} from "react-router-dom";
 import {useFormik} from "formik";
@@ -11,6 +11,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import {loginTC} from "../../Redux/LoginReducer";
 import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
+import s from "./Login.module.css";
+import {Container} from "@mui/system";
 
 type FormikErrorType = {
     email?: string
@@ -54,62 +56,70 @@ export const Login = () => {
     }
 
     return (
-        <div className={style.loginContainer}>
-            <Paper elevation={3}
-                   sx={{
-                       width: "413px",
-                       height: "600px"
-                   }}>
-                <div className={style.labelCards}>
-                    <div className={style.loginTitle}>
-                        <label>
-                            Cards
-                        </label>
-                    </div>
-                    <div className={style.loginSingIn}>
-                        <label>
-                            Sing in
-                        </label>
-                    </div>
-                    <div>
-                        <form onSubmit={formik.handleSubmit} className={style.form}>
-                            <div className={style.field}>
-                                <TextField
-                                    type="email"
-                                    placeholder="johndoe@email.com"
-                                    label="Email"
-                                    {...formik.getFieldProps('email')}
-                                />
-                                {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+        <div className={s.Wrapper}>
+            <Container maxWidth="lg">
+                <Grid container justifyContent="center" alignItems="center">
+                    <Grid item marginTop={15}>
+                        <Paper className={s.Paper}>
+                            <div className={s.Heading}>
+                                It-incubator
                             </div>
-                            <div className={style.field}>
-                                <TextField
-                                    type="password"
-                                    placeholder="password"
-                                    label="Password"
-                                    {...formik.getFieldProps('password')}
-                                />
-                                {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                            <div className={s.Title}>
+                                Sing in
                             </div>
-                            <div className={style.field}>
-                                <FormControlLabel label={'Remember me'}
-                                                  control={<Checkbox
-                                                      {...formik.getFieldProps('rememberMe')}
-                                                  />}/>
+                            <form onSubmit={formik.handleSubmit}>
+                                <FormControl className={s.FormControl}>
+                                    <FormGroup className={s.FormGroup}>
+                                        <TextField
+                                            type="email"
+                                            label="Email"
+                                            placeholder="johndoe@email.com"
+                                            size='medium'
+                                            fullWidth={true}
+                                            variant='standard'
+                                            margin='normal'
+                                            {...formik.getFieldProps('email')}
+                                            onBlur={formik.handleBlur}/>
+                                        {formik.touched.email && formik.errors.email ?
+                                            <div style={{color: "red"}}>{formik.errors.email}</div> : <div> </div>}
+                                        <TextField label="Password"
+                                                   type="password"
+                                                   placeholder="password"
+                                                   size='medium'
+                                                   fullWidth={true}
+                                                   hidden
+                                                   variant='standard'
+                                                   margin='normal'
+                                                   {...formik.getFieldProps('password')}
+                                                   onBlur={formik.handleBlur}/>
+                                        {formik.touched.password && formik.errors.password ?
+                                            <div style={{color: "red"}}>{formik.errors.password}</div> : <div> </div>}
+                                        <div className={style.field}>
+                                            <FormControlLabel label={'Remember me'}
+                                                              control={<Checkbox
+                                                                  {...formik.getFieldProps('rememberMe')}
+                                                              />}
+                                            />
 
-                            </div>
-                            <div className={style.field}>
-                                <Button type={'submit'} variant={'contained'} color={'primary'}>
-                                    Login
-                                </Button>
-                            </div>
-                        </form>
-                    </div>
-                    Don't have an account?
-                    <NavLink to={PATH.REGISTRATION} className={style.linkSignUp}>Sign up</NavLink>
-                </div>
-
-            </Paper>
+                                        </div>
+                                        <Grid container justifyContent={"center"}>
+                                            <button className={s.RegisterButton} type={"submit"}>
+                                                Login
+                                            </button>
+                                        </Grid>
+                                        <div className={s.notAccount}>
+                                            Don't have an account?
+                                        </div>
+                                        <div className={s.linkSignUp}>
+                                            <NavLink to={PATH.REGISTRATION}>Sign up</NavLink>
+                                        </div>
+                                    </FormGroup>
+                                </FormControl>
+                            </form>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Container>
         </div>
     );
 };

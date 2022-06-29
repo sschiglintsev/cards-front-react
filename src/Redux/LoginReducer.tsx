@@ -78,6 +78,7 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
         .catch((error) => {
             dispatch(setMessageAC(error.message, true))
             setTimeout(() => {
+
                 dispatch(setMessageAC('', false))
             }, 2000)
             console.log(error.message)
@@ -90,6 +91,7 @@ export const logoutTC = (): AppThunk => (dispatch: Dispatch) => {
             dispatch(LogoutAC())
             dispatch(setMessageAC(response.data.info, false))
             setTimeout(() => {
+                debugger
                 dispatch(setMessageAC('', false))
             }, 2000)
         })
