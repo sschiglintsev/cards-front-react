@@ -4,7 +4,6 @@ import style from "./Login.module.css"
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
 import {PATH} from "../Routes/Routes";
-import c from "../Header/Header.module.css";
 import {NavLink} from "react-router-dom";
 import {useFormik} from "formik";
 import {Navigate} from "react-router-dom";
@@ -12,7 +11,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import {loginTC} from "../../Redux/LoginReducer";
 import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
-import {RootState} from "../../Redux/Store";
 
 type FormikErrorType = {
     email?: string
@@ -57,7 +55,11 @@ export const Login = () => {
 
     return (
         <div className={style.loginContainer}>
-            <Paper elevation={3}>
+            <Paper elevation={3}
+                   sx={{
+                       width: "413px",
+                       height: "600px"
+                   }}>
                 <div className={style.labelCards}>
                     <div className={style.loginTitle}>
                         <label>
@@ -70,31 +72,41 @@ export const Login = () => {
                         </label>
                     </div>
                     <div>
-                        <form onSubmit={formik.handleSubmit}>
-                            <TextField
-                                type="email"
-                                placeholder="johndoe@email.com"
-                                label="Email"
-                                {...formik.getFieldProps('email')}
-                            />
-                            <TextField
-                                type="password"
-                                placeholder="password"
-                                label="Password"
-                                {...formik.getFieldProps('password')}
-                            />
-                            <FormControlLabel label={'Remember me'}
-                                              control={<Checkbox
-                                                  {...formik.getFieldProps('rememberMe')}
-                                              />}/>
-                            <Button type={'submit'} variant={'contained'} color={'primary'}>
-                                Login
-                            </Button>
+                        <form onSubmit={formik.handleSubmit} className={style.form}>
+                            <div className={style.field}>
+                                <TextField
+                                    type="email"
+                                    placeholder="johndoe@email.com"
+                                    label="Email"
+                                    {...formik.getFieldProps('email')}
+                                />
+                                {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                            </div>
+                            <div className={style.field}>
+                                <TextField
+                                    type="password"
+                                    placeholder="password"
+                                    label="Password"
+                                    {...formik.getFieldProps('password')}
+                                />
+                                {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                            </div>
+                            <div className={style.field}>
+                                <FormControlLabel label={'Remember me'}
+                                                  control={<Checkbox
+                                                      {...formik.getFieldProps('rememberMe')}
+                                                  />}/>
+
+                            </div>
+                            <div className={style.field}>
+                                <Button type={'submit'} variant={'contained'} color={'primary'}>
+                                    Login
+                                </Button>
+                            </div>
                         </form>
                     </div>
                     Don't have an account?
-                    <NavLink to={PATH.REGISTRATION} className={c.link}>Sign up</NavLink>
-
+                    <NavLink to={PATH.REGISTRATION} className={style.linkSignUp}>Sign up</NavLink>
                 </div>
 
             </Paper>
