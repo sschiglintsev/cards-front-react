@@ -7,11 +7,11 @@ import FormControl from '@mui/material/FormControl';
 import { recoveryPasswordAC, recoveryPasswordTC } from '../../Redux/RecoveryPasswordReducer';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../Redux/Store';
 import { useNavigate } from "react-router-dom";
 import { PATH } from '../Routes/Routes';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
+import {RootStateType} from "../../Redux/Store";
 
 interface State {
 	email: string;
@@ -19,9 +19,9 @@ interface State {
 
 export const RecoveryPassword: FC = () => {
 	const dispatch = useDispatch();
-	const info = useSelector<AppRootStateType, string>(state => state.RecoveryPassword.info);
-	const error = useSelector<AppRootStateType, string>(state => state.RecoveryPassword.error);
-	const isLoading = useSelector<AppRootStateType, boolean>(state => state.RecoveryPassword.isLoading);
+	const info = useSelector<RootStateType, string>(state => state.RecoveryPassword.info);
+	const error = useSelector<RootStateType, string>(state => state.RecoveryPassword.error);
+	const isLoading = useSelector<RootStateType, boolean>(state => state.RecoveryPassword.isLoading);
 
 	const navigate = useNavigate();
 
