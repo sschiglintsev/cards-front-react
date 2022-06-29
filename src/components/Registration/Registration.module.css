@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+* {
+    box-sizing: border-box;
+}
+
+.Wrapper {
+    height: calc(100vh - 20px);
+}
+
+.Paper {
+    padding-top: 25px;
+    height: 540px;
+    width: 413px;
+    border-radius: 8px;
+}
+
+.Heading {
+    height: 39px;
+    width: 163px;
+    font-size: 26px;
+    line-height: 39px;
+    font-style: normal;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+    color: #2d2e46;
+    margin: 0 auto;
+}
+
+.Title {
+    width: 85px;
+    height: 33px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: #2d2e46;
+    margin: 0 auto;
+    margin-top: 32px;
+}
+
+.FormControl {
+    width: 413px;
+}
+.FormGroup {
+    width: 100%;
+    padding: 0 33px;
+}
+
+.CancelButton {
+    width: 124px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #d7d8ef;
+    color: #21268f;
+    border: 0;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 93px;
+    text-align: center;
+}
+
+.RegisterButton {
+    width: 187px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #21268F;
+    color: #ECECF9;
+    border: 0;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 93px;
+    text-align: center;
+}
+
+.error {
+    width: 100%;
+    text-align: center;
+    color: red;
+    padding-top: 20px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+}

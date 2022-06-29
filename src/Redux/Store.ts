@@ -3,7 +3,7 @@ import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {LoginActionsType, LoginReducer} from "./LoginReducer";
 import {NewasswordReducer} from "./NewPasswordReducer";
 import {ProfileReducer} from "./ProfileReducer";
-import {RegistrationReducer} from "./RegistrationReducer";
+import {RegistrationActionType, RegistrationReducer} from "./RegistrationReducer";
 import {RecoveryPasswordReducer} from "./RecoveryPasswordReducer";
 
 
@@ -17,12 +17,12 @@ const rootReducer = combineReducers({
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
-type AppActionType = LoginActionsType
+type AppActionType = LoginActionsType | RegistrationActionType
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = ThunkDispatch<RootState,unknown,AppActionType>
+export type RootStateType = ReturnType<typeof store.getState>
+export type AppDispatch = ThunkDispatch<RootStateType,unknown,AppActionType>
 //export type AppDispatch = typeof store.dispatch
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,RootState,unknown,AnyAction>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType,RootStateType,unknown,AnyAction>
 
 // @ts-ignore
 window.store = store;
