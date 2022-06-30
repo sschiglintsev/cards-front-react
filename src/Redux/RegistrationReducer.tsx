@@ -1,5 +1,5 @@
-import { Dispatch } from "redux"
 import { accountAPI } from "../api/app-api"
+import { setMessageAC } from "./AppReducer"
 import { AppThunk } from "./Store"
 
 
@@ -35,15 +35,12 @@ export type RegisterValuesType = {
 export const registerUserTC = (values: RegisterValuesType): AppThunk => (dispatch) => {
     accountAPI.register(values)
     .then((result) => {
-        console.log(result);
         if(!result.data.error) {
             dispatch(setIsRegisteredAC(true))
         } 
     })
-    .catch((error) => {
-        console.log(error.response.data.error);
-        
-        dispatch(setRegistrationErrorAC(error.response.data.error))
+    .catch((error) => {        
+        dispatch(setMessageAC(error.response.data.error, true))
     })
 }
 
