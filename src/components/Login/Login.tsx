@@ -103,7 +103,7 @@ export const Login = () => {
 
                                         </div>
                                         <Grid container justifyContent={"center"}>
-                                            <button className={s.RegisterButton} type={"submit"}>
+                                            <button className={s.LoginButton} type={"submit"}>
                                                 Login
                                             </button>
                                         </Grid>
