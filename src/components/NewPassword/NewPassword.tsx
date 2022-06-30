@@ -1,5 +1,6 @@
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
+import { useParams } from 'react-router-dom';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -8,7 +9,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import style from './NewPassword.module.css';
 import { Button } from '@mui/material';
-import { recoveryApi } from '../../api/Api';
+import { useDispatch } from 'react-redux';
+import { newPasswordTC } from '../../Redux/NewPasswordReducer';
 
 interface State {
   password: string;
@@ -16,10 +18,13 @@ interface State {
 }
 
 export const NewPassword: React.FC = () => {
+  const dispatch = useDispatch();
   const [values, setValues] = React.useState<State>({
     password: '',
     showPassword: false,
   });
+
+  let { userToken } = useParams();
 
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +43,10 @@ export const NewPassword: React.FC = () => {
   };
 
   const onSubmitButton = () => {
-    recoveryApi.setNewPassword({
-        password: values.password,
-        resetPasswordToken: 'token'
-    }).then(data => console.log(data))
+    dispatch<any>(newPasswordTC({
+      password: values.password,
+      resetPasswordToken: userToken || '',
+    }));
   };
 
   return (
