@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {LoginApi, LoginParamsType} from "../api/login-api";
+import { setMessageAC } from "./AppReducer";
 import {AppThunk} from "./Store";
 
 type InitialStateLoginType = {
@@ -34,8 +35,8 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
             }
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
-        case "login/SET-MESSAGE":
-            return {...state, message: action.message, errorStatus: action.errorStatus}
+        // case "login/SET-MESSAGE":
+        //     return {...state, message: action.message, errorStatus: action.errorStatus}
         default:
             return {...state}
     }
@@ -61,12 +62,12 @@ export const LogoutAC = () =>
 
     } as const)
 
-export const setMessageAC = (message: string, errorStatus: boolean) =>
-    ({
-        type: 'login/SET-MESSAGE',
-        message,
-        errorStatus
-    } as const)
+// export const setMessageAC = (message: string, errorStatus: boolean) =>
+//     ({
+//         type: 'login/SET-MESSAGE',
+//         message,
+//         errorStatus
+//     } as const)
 
 
 export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch) => {
@@ -77,9 +78,6 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
         })
         .catch((error) => {
             dispatch(setMessageAC(error.message, true))
-            setTimeout(() => {
-                dispatch(setMessageAC('', false))
-            }, 2000)
             console.log(error.message)
         })
 }
@@ -89,9 +87,6 @@ export const logoutTC = (): AppThunk => (dispatch: Dispatch) => {
         .then(response => {
             dispatch(LogoutAC())
             dispatch(setMessageAC(response.data.info, false))
-            setTimeout(() => {
-                dispatch(setMessageAC('', false))
-            }, 2000)
         })
 }
 

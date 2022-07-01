@@ -20,7 +20,6 @@ type ErrorType = {
 export const Registration = () => {
     let dispatch = useAppDispatch();
     let isRegistered = useSelector<RootStateType, boolean>(store => store.registration.isRegistered);
-    let error = useSelector<RootStateType, string | null>(store => store.registration.error);
 
     const formik = useFormik({
         initialValues: {
@@ -110,7 +109,6 @@ export const Registration = () => {
                                     </FormGroup>
                                 </FormControl>
                             </form>
-                            {error && <div className={s.error}>{error}</div>}
                         </Paper>
                     </Grid>
                 </Grid>
