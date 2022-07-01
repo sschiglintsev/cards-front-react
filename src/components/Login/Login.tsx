@@ -2,7 +2,7 @@ import React from 'react';
 import Paper from "@mui/material/Paper";
 import style from "./Login.module.css"
 import TextField from "@mui/material/TextField";
-import { FormControl, FormGroup, Grid} from "@mui/material";
+import {FormControl, FormGroup, Grid} from "@mui/material";
 import {PATH} from "../Routes/Routes";
 import {NavLink} from "react-router-dom";
 import {useFormik} from "formik";
@@ -81,7 +81,7 @@ export const Login = () => {
                                             {...formik.getFieldProps('email')}
                                             onBlur={formik.handleBlur}/>
                                         {formik.touched.email && formik.errors.email ?
-                                            <div style={{color: "red"}}>{formik.errors.email}</div> : <div> </div>}
+                                            <div style={{color: "red"}}>{formik.errors.email}</div> : <div></div>}
                                         <TextField label="Password"
                                                    type="password"
                                                    placeholder="password"
@@ -93,14 +93,16 @@ export const Login = () => {
                                                    {...formik.getFieldProps('password')}
                                                    onBlur={formik.handleBlur}/>
                                         {formik.touched.password && formik.errors.password ?
-                                            <div style={{color: "red"}}>{formik.errors.password}</div> : <div> </div>}
+                                            <div style={{color: "red"}}>{formik.errors.password}</div> : <div></div>}
                                         <div className={style.field}>
                                             <FormControlLabel label={'Remember me'}
                                                               control={<Checkbox
                                                                   {...formik.getFieldProps('rememberMe')}
                                                               />}
                                             />
-
+                                        </div>
+                                        <div className={s.linkForgotPass}>
+                                            <NavLink to={PATH.RECOVERY_PASSWORD}>Forgot password</NavLink>
                                         </div>
                                         <Grid container justifyContent={"center"}>
                                             <button className={s.LoginButton} type={"submit"}>

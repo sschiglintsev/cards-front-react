@@ -3,7 +3,7 @@ import {Container} from '@mui/system';
 import {useFormik} from 'formik';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {Navigate} from 'react-router-dom';
+import {Navigate, NavLink} from 'react-router-dom';
 
 import {useAppDispatch} from '../../Redux/hooks';
 import {registerUserTC} from '../../Redux/RegistrationReducer';
@@ -99,9 +99,12 @@ export const Registration = () => {
                                         {formik.touched.confirmPassword && formik.errors.confirmPassword ?
                                             <div style={{color: "red"}}>{formik.errors.confirmPassword}</div> : null}
                                         <Grid container justifyContent={"space-between"}>
-                                            <button className={s.CancelButton}>
-                                                Cancel
-                                            </button>
+                                            {/*<button className={s.CancelButton}>*/}
+                                            {/*    Cancel*/}
+                                            {/*</button>*/}
+                                            <div className={s.CancelButton}>
+                                                <NavLink to={PATH.LOGIN}>Cancel</NavLink>
+                                            </div>
                                             <button className={s.RegisterButton} type={"submit"}>
                                                 Register
                                             </button>

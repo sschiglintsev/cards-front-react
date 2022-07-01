@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import { recoveryPasswordAC, recoveryPasswordTC } from '../../Redux/RecoveryPasswordReducer';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import { PATH } from '../Routes/Routes';
 
 import {RootStateType} from "../../Redux/Store";
@@ -72,7 +72,7 @@ export const RecoveryPassword: FC = () => {
 
 					<div className={style.recoveryPasswordFooter}>
 						<p>Did you remember your password?</p>
-						<a className={style.linkToLogin} href='#'>Try loggin in</a>
+						<NavLink className={style.linkToLogin} to={PATH.LOGIN} >Try loggin in</NavLink>
 					</div>
     </div>
   );

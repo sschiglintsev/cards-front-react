@@ -100,5 +100,9 @@
 
 .linkSignUp {
     padding-top: 10px;
-    padding-left: 250px;
+    text-align: center;
+}
+.linkForgotPass {
+    padding-top: 10px;
+    padding-left: 225px;
 }
