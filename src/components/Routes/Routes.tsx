@@ -29,7 +29,9 @@ export const RoutesPage = () => {
                 <Route path={'/'} element={<Main/>}/>
                 <Route path={PATH.MAIN} element={<Main/>}/>
                 <Route path={PATH.LOGIN} element={<Login/>}/>
-                <Route path={PATH.NEW_PASSWORD} element={<NewPassword/>}/>
+                <Route path={PATH.NEW_PASSWORD}>
+                    <Route path=":userToken" element={<NewPassword/>}/>
+                </Route>
                 <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword/>}/>
                 <Route path={PATH.REGISTRATION} element={<Registration/>}/>
                 <Route path={PATH.PROFILE} element={<Profile/>}/>

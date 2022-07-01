@@ -27,7 +27,7 @@ export const recoveryApi = {
     
 };
 
-interface NewPasswordData {
+export interface NewPasswordData {
     password: string
     resetPasswordToken: string
 }
