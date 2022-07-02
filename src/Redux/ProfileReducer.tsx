@@ -12,16 +12,3 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: a
     }
 }
 
-
-// export const initializeAppTC = () => (dispatch: Dispatch) => {
-//
-// }
-
-// export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-//
-//
-// export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
-//
-//
-// type ActionsType =
-//     | SetAppErrorActionType

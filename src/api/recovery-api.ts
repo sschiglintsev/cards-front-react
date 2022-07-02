@@ -1,9 +1,4 @@
-import axios from "axios";
-
-const instance = axios.create({
-    baseURL: 'https://neko-back.herokuapp.com/2.0',
-    withCredentials: true,
-});
+import {instance} from "./axiosConf";
 
 export const recoveryApi = {
     async setNewPassword(newPasswordData: NewPasswordData) {
@@ -11,7 +6,7 @@ export const recoveryApi = {
         return res.data;
     },
 
-    async recoveryPassword (email: string) {
+    async recoveryPassword(email: string) {
         const data = {
             email,
             from: 'test-front-admin',
@@ -22,9 +17,9 @@ export const recoveryApi = {
             </div>`,
         }
         const res = await instance.post<ResponseData>('auth/forgot', data);
-        return res.data; 
+        return res.data;
     },
-    
+
 };
 
 export interface NewPasswordData {

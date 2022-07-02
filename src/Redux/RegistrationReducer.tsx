@@ -1,8 +1,6 @@
-import { accountAPI } from "../api/app-api"
 import { setMessageAC } from "./AppReducer"
 import { AppThunk } from "./Store"
-
-
+import {accountAPI} from "../api/registration-api";
 
 const initialState: InitialStateType = {
     isRegistered: false,

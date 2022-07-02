@@ -35,8 +35,6 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
             }
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
-        // case "login/SET-MESSAGE":
-        //     return {...state, message: action.message, errorStatus: action.errorStatus}
         default:
             return {...state}
     }
@@ -59,16 +57,7 @@ export const setProfileAC = (name: string, email: string, publicCardPacksCount: 
 export const LogoutAC = () =>
     ({
         type: 'login/LOGOUT',
-
     } as const)
-
-// export const setMessageAC = (message: string, errorStatus: boolean) =>
-//     ({
-//         type: 'login/SET-MESSAGE',
-//         message,
-//         errorStatus
-//     } as const)
-
 
 export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch) => {
     LoginApi.login(data)

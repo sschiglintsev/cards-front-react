@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { NewPasswordData, recoveryApi } from "../api/Api"
+import {NewPasswordData, recoveryApi} from "../api/recovery-api";
 
 export type InitialStateType = {
     info: string
@@ -73,15 +73,4 @@ export type changeIsLoadingACType = {
     isLoading: boolean
 }
 
-
-// export const initializeAppTC = () => (dispatch: Dispatch) => {
-
-// }
-
-// export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
-//
-//
-// export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
-//
-//
 export type ActionsType = recoveryPasswordACType | setErrorACType | changeIsLoadingACType;
