@@ -1,15 +1,15 @@
-import {FormControl, FormGroup, Grid, Paper, TextField} from '@mui/material';
-import {Container} from '@mui/system';
-import {useFormik} from 'formik';
+import { FormControl, FormGroup, Grid, Paper, TextField } from '@mui/material';
+import { Container } from '@mui/system';
+import { useFormik } from 'formik';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {Navigate, NavLink} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 
-import {useAppDispatch} from '../../Redux/hooks';
-import {registerUserTC} from '../../Redux/RegistrationReducer';
-import {PATH} from '../Routes/Routes';
+import { useAppDispatch } from '../../Redux/hooks';
+import { registerUserTC } from '../../Redux/RegistrationReducer';
+import { PATH } from '../Routes/Routes';
 import s from "./Registration.module.css";
-import {RootStateType} from "../../Redux/Store";
+import { RootStateType } from "../../Redux/Store";
 
 type ErrorType = {
     email?: string
@@ -20,6 +20,11 @@ type ErrorType = {
 export const Registration = () => {
     let dispatch = useAppDispatch();
     let isRegistered = useSelector<RootStateType, boolean>(store => store.registration.isRegistered);
+    let navigate = useNavigate();
+
+    function onCancelClickHandler() {
+        navigate(PATH.LOGIN);
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +48,7 @@ export const Registration = () => {
             return errors;
         },
         onSubmit: values => {
-            let res = {email: values.email, password: values.password}
+            let res = { email: values.email, password: values.password }
             console.log(res)
             dispatch(registerUserTC(res))
             formik.resetForm();
@@ -51,7 +56,7 @@ export const Registration = () => {
     })
 
     if (isRegistered) {
-        return <Navigate to={PATH.LOGIN}/>
+        return <Navigate to={PATH.LOGIN} />
     }
 
     return (
@@ -70,41 +75,39 @@ export const Registration = () => {
                                 <FormControl className={s.FormControl}>
                                     <FormGroup className={s.FormGroup}>
                                         <TextField label="email"
-                                                   size='medium'
-                                                   fullWidth={true}
-                                                   variant='standard'
-                                                   margin='normal'
-                                                   {...formik.getFieldProps('email')}
-                                                   onBlur={formik.handleBlur}/>
+                                            size='medium'
+                                            fullWidth={true}
+                                            variant='standard'
+                                            margin='normal'
+                                            {...formik.getFieldProps('email')}
+                                            onBlur={formik.handleBlur} />
                                         {formik.touched.email && formik.errors.email ?
-                                            <div style={{color: "red"}}>{formik.errors.email}</div> : null}
+                                            <div style={{ color: "red" }}>{formik.errors.email}</div> : null}
                                         <TextField label="password"
-                                                   type="password"
-                                                   size='medium'
-                                                   fullWidth={true}
-                                                   hidden
-                                                   variant='standard'
-                                                   margin='normal'
-                                                   {...formik.getFieldProps('password')}
-                                                   onBlur={formik.handleBlur}/>
+                                            type="password"
+                                            size='medium'
+                                            fullWidth={true}
+                                            hidden
+                                            variant='standard'
+                                            margin='normal'
+                                            {...formik.getFieldProps('password')}
+                                            onBlur={formik.handleBlur} />
                                         {formik.touched.password && formik.errors.password ?
-                                            <div style={{color: "red"}}>{formik.errors.password}</div> : null}
+                                            <div style={{ color: "red" }}>{formik.errors.password}</div> : null}
                                         <TextField label="Сonfirm password"
-                                                   size='medium'
-                                                   fullWidth={true}
-                                                   variant='standard'
-                                                   margin='normal'
-                                                   {...formik.getFieldProps('confirmPassword')}
-                                                   onBlur={formik.handleBlur}/>
+                                            type="password"
+                                            size='medium'
+                                            fullWidth={true}
+                                            variant='standard'
+                                            margin='normal'
+                                            {...formik.getFieldProps('confirmPassword')}
+                                            onBlur={formik.handleBlur} />
                                         {formik.touched.confirmPassword && formik.errors.confirmPassword ?
-                                            <div style={{color: "red"}}>{formik.errors.confirmPassword}</div> : null}
+                                            <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div> : null}
                                         <Grid container justifyContent={"space-between"}>
-                                            {/*<button className={s.CancelButton}>*/}
-                                            {/*    Cancel*/}
-                                            {/*</button>*/}
-                                            <div className={s.CancelButton}>
-                                                <NavLink to={PATH.LOGIN}>Cancel</NavLink>
-                                            </div>
+                                            <button className={s.CancelButton} onClick={onCancelClickHandler} type={"button"}>
+                                                Cancel
+                                            </button>
                                             <button className={s.RegisterButton} type={"submit"}>
                                                 Register
                                             </button>

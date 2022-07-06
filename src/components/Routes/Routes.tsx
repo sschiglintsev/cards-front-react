@@ -20,6 +20,7 @@ export const PATH = {
     RECOVERY_PASSWORD:'/recovery-password',
     TEST:'/test',
     CHECK_EMAIL: '/check-email',
+    PACKS_LIST: '/packs-list',
 }
 
 export const RoutesPage = () => {

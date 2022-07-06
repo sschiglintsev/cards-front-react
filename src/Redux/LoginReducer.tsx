@@ -10,9 +10,10 @@ type InitialStateLoginType = {
     publicCardPacksCount: number,
     message: string,
     errorStatus: boolean
-
+    avatar?: string
 }
 const initialStateLogin: InitialStateLoginType = {
+    avatar: '',
     isLoggedIn: false,
     name: '',
     email: '',
@@ -31,7 +32,8 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
                 ...state,
                 name: action.payload.name,
                 email: action.payload.email,
-                publicCardPacksCount: action.payload.publicCardPacksCount
+                publicCardPacksCount: action.payload.publicCardPacksCount,
+                avatar: action.payload.avatar
             }
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
@@ -46,13 +48,14 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
 export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
-export const setProfileAC = (name: string, email: string, publicCardPacksCount: number) =>
+export const setProfileAC = (name: string, email: string, publicCardPacksCount: number, avatar: string = '') =>
     ({
         type: 'login/SET-PROFILE',
         payload: {
             name,
             email,
-            publicCardPacksCount
+            publicCardPacksCount,
+            avatar
         }
     } as const)
 
@@ -74,7 +77,7 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
     LoginApi.login(data)
         .then(response => {
             dispatch(setIsLoggedInAC(true))
-            dispatch(setProfileAC(response.data.name, response.data.email, response.data.publicCardPacksCount))
+            dispatch(setProfileAC(response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
         })
         .catch((error) => {
             dispatch(setMessageAC(error.message, true))

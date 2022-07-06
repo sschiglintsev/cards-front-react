@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.Header {
+    height: 60px;
+    width: 100%;
+    background-color: #ebe0e9;
+}
+
+.Invisible {
+    visibility: hidden;
+    height: 60px;
+    width: 100%;
+}
+
+.Logo {
+    position: absolute;
+    width: 163px;
+    height: 39px;
+    left: 136px;
+    top: 10px;
+
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 39px;
+    color: #2d2e46;
+}
+
+.Wrapper {
+    height: 60px;
+    width: 346px;
+    margin: 0 auto;
+}
+
+.Link {
+    display: inline-block;
+    width: 173px;
+    height: 60px;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+    color: rgb(143, 143, 143);
+    text-align: center;
+    line-height: 60px;
+}
+
+
+.ActiveLink {
+    display: inline-block;
+    width: 173px;
+    height: 60px;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    text-decoration: none;
+    color: #2D2E46;
+    text-align: center;
+    line-height: 60px;
+    background-color: #DCCCDB;
+    border-bottom: 3px solid #21268F;
+}
+
+i {
+    margin-right: 10px;
+}

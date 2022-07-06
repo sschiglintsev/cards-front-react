@@ -2,7 +2,7 @@ import {AnyAction, applyMiddleware, combineReducers, createStore} from 'redux'
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {LoginActionsType, LoginReducer} from "./LoginReducer";
 import {NewPasswordReducer} from "./NewPasswordReducer";
-import {ProfileReducer} from "./ProfileReducer";
+import {ProfileActionsType, ProfileReducer} from "./ProfileReducer";
 import {RegistrationActionType, RegistrationReducer} from "./RegistrationReducer";
 import {RecoveryPasswordReducer} from "./RecoveryPasswordReducer";
 import { AppReducer } from './AppReducer';
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
-type AppActionType = LoginActionsType | RegistrationActionType
+type AppActionType = LoginActionsType | RegistrationActionType | ProfileActionsType
 
 export type RootStateType = ReturnType<typeof store.getState>
 export type AppDispatch = ThunkDispatch<RootStateType,unknown,AppActionType>
