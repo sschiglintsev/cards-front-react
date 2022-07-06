@@ -1,6 +1,6 @@
 import React from 'react'
 import {Navigate, Route, Routes} from "react-router-dom";
-import Main from "../Main/Main";
+import {Main} from "../Main/Main";
 import {Login} from "../Login/Login";
 import {Error404} from "../Error404/Error404";
 import {NewPassword} from "../NewPassword/NewPassword";
@@ -9,6 +9,7 @@ import {Registration} from "../Registration/Registration";
 import {Profile} from "../Profile/Profile";
 import {Test} from "../Test/Test";
 import { CheckEmail } from '../CheckEmail/CheckEmail';
+import {Cards} from "../Cards/Cards";
 
 export const PATH = {
     MAIN: '/main',
@@ -20,6 +21,7 @@ export const PATH = {
     RECOVERY_PASSWORD:'/recovery-password',
     TEST:'/test',
     CHECK_EMAIL: '/check-email',
+    CARD:'/cards/card',
 }
 
 export const RoutesPage = () => {
@@ -39,6 +41,9 @@ export const RoutesPage = () => {
                 <Route path={PATH.TEST} element={<Test/>}/>
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
                 <Route path="*" element={<Navigate to="/error404"/>}/>
+                <Route path={PATH.CARD}>
+                    <Route path=":cardsPack_id" element={<Cards/>}/>
+                </Route>
             </Routes>
         </div>
     )

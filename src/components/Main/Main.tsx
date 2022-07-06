@@ -1,11 +1,10 @@
 import React from 'react';
+import {Cards} from "../Cards/Cards";
 
-const Main = () => {
+export const Main = () => {
     return (
-        <div>
-            Main
-        </div>
+        <>
+            {/*<Cards/>*/}
+        </>
     );
 };
-
-export default Main;

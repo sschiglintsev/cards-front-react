@@ -1,0 +1,42 @@
+.Wrapper {
+    height: calc(100vh - 70px);
+}
+
+.Paper {
+    padding-top: 25px;
+    height: 636px;
+    width: 1008px;
+    border-radius: 8px;
+}
+
+.TableContainer {
+    display: flex;
+    justify-content: center;
+    width: 960px;
+    margin-left: 24px;
+
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.backPack {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}

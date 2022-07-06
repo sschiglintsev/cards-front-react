@@ -6,6 +6,7 @@ import {ProfileReducer} from "./ProfileReducer";
 import {RegistrationActionType, RegistrationReducer} from "./RegistrationReducer";
 import {RecoveryPasswordReducer} from "./RecoveryPasswordReducer";
 import { AppReducer } from './AppReducer';
+import {CardsReduser} from "./CardsReducer";
 
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     registration:RegistrationReducer,
     RecoveryPassword:RecoveryPasswordReducer,
     app: AppReducer,
+    cards:CardsReduser,
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
