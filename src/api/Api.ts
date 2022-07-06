@@ -24,7 +24,14 @@ export const recoveryApi = {
         const res = await instance.post<ResponseData>('auth/forgot', data);
         return res.data; 
     },
-    
+    async isLogin () {
+        const res = await instance.post<any>('/auth/me', {});
+        return res.data;
+    },
+    async editCard (cardData: CardDataType) {
+        const res = await instance.put('/cards/card', cardData);
+        return res.data;
+    }
 };
 
 export interface NewPasswordData {
@@ -35,4 +42,10 @@ export interface NewPasswordData {
 interface ResponseData {
     info: string
     error: string
+}
+
+type CardDataType = {
+    _id: string,
+    question: string,
+    answer: string,
 }
