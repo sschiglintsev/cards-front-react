@@ -20,6 +20,8 @@ export const CardsReduser = (state: InitialStateType = initialState, action: Car
     switch (action.type) {
         case "cards/ADD-CARDS":
             return {...state, cards:action.payload.data, page:action.payload.page, pageCount:action.payload.pageCount, cardsTotalCount:action.payload.cardsTotalCount}
+        case "cards/CHANGE-CARD-EDIT-STATUS":
+            return {...state, cards: state.cards.map((card): cardType => card._id === action.cardId ? {...card, isEditCard: !card.isEditCard} : card)}
         default:
             return {...state}
     }
@@ -37,14 +39,25 @@ export const setCardsAC = (data:cardType[],page:number, pageCount:number,cardsTo
         }
     } as const)
 
+export const changeCardEditStatus = (cardId: string): changeCardEditStatusType => ({
+    type: 'cards/CHANGE-CARD-EDIT-STATUS',
+    cardId
+} as const)
+
 type setMessageAType = ReturnType<typeof setCardsAC>
 
-type CardsActionSType = setMessageAType
+type changeCardEditStatusType = {
+    type: 'cards/CHANGE-CARD-EDIT-STATUS',
+    cardId: string
+}
+
+type CardsActionSType = setMessageAType | changeCardEditStatusType
 
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
     CardsApi.getCards(data)
         .then(response => {
-            dispatch(setCardsAC(response.data.cards, response.data.page, response.data.pageCount, response.data.cardsTotalCount))
+            const cards = response.data.cards.map(item => ({...item, isEditCard: false}))
+            dispatch(setCardsAC(cards, response.data.page, response.data.pageCount, response.data.cardsTotalCount))
         })
         .catch(() => {
         })

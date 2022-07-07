@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from "./Cards.module.css";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -18,15 +18,23 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import {useParams} from 'react-router-dom';
+import {Navigate, useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
-import {setCardsTC} from "../../Redux/CardsReducer";
+import {changeCardEditStatus, setCardsTC} from "../../Redux/CardsReducer";
+import { CardsApi } from '../../api/cards-api';
+import { PATH } from '../Routes/Routes';
+import { NavLink } from 'react-router-dom';
+import { Card } from './Card/Card';
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+        backgroundColor: '#ECECF9',
+        color: '#2D2E46',
+        fontStyle: 'normal',
+        fontWeight: '700',
+        fontSize: '13px',
+        lineHeight: '16px',
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
@@ -46,16 +54,15 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
 export const Cards = () => {
 
     const dispatch = useAppDispatch()
+
+    const [redirect, setRedirect] = useState(false);
+
     const cards = useAppSelector(state => state.cards)
 
     const rows = cards.cards
     const page = cards.page
     const pageCount = cards.pageCount
     const cardsTotalCount = cards.cardsTotalCount
-
-    console.log(pageCount)
-    console.log(cardsTotalCount)
-    console.log(Math.ceil(cardsTotalCount / pageCount))
 
     const {cardsPack_id} = useParams();
 
@@ -65,8 +72,6 @@ export const Cards = () => {
         dispatch(setCardsTC({cardsPack_id}))
     }, [])
 
-    console.log(cardsPack_id)
-
     //Pagination
 
     const [pageValue, setPageValue] = React.useState(page);
@@ -74,16 +79,25 @@ export const Cards = () => {
         setPageValue(value);
     };
 
+    const [text, setText] = useState('');
+
+    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setText(event.target.value);
+    };
+
     // Buttons func
 
     const deleteCard = (id: string) => {
-        console.log('delete')
+        CardsApi.deleteCard(id);
     }
 
-    const editButton = (id: string) => {
-        console.log('edit')
-    }
+    // const redirectToCard = () => {
+    //     setRedirect(true);
+    // }
 
+    // if (redirect) {
+    //   return <Navigate to={PATH.ADD_NEW_CARD}/>
+    // }
 
     return (
         <div className={style.Wrapper}>
@@ -109,9 +123,26 @@ export const Cards = () => {
                                     sx={{
                                         width: 960,
                                         maxWidth: '100%',
+                                        display: 'flex',
+                                        justifyContent: 'space-around',
                                     }}
                                 >
-                                    <TextField fullWidth label="🔍" id="fullWidth"/>
+                                    <input 
+                                        className={style.searchInput}
+                                        value={text}
+                                        onChange={onChangeInput}
+                                        type='text'
+                                        placeholder='Search...'>    
+                                    </input>
+                                    <NavLink to={`${PATH.ADD_NEW_CARD}/${cardsPack_id}`} className={style.link}>
+                                        <Button 
+                                                sx={{backgroundColor: '#21268F', width: '184px', borderRadius: '30px'}}
+                                                variant="contained"
+                                                >
+                                                Add new card
+                                        </Button>
+                                    </NavLink>
+                                    
                                 </Box>
                             </div>
 
@@ -119,7 +150,7 @@ export const Cards = () => {
                                 <TableContainer component={Paper}>
                                     <Table sx={{minWidth: 700}} aria-label="customized table">
                                         <TableHead>
-                                            <TableRow>
+                                            <TableRow sx={{backgroundColor: '#ECECF9'}}>
                                                 <StyledTableCell>Question</StyledTableCell>
                                                 <StyledTableCell align="right">Answer</StyledTableCell>
                                                 <StyledTableCell align="right">Last Update</StyledTableCell>
@@ -128,39 +159,8 @@ export const Cards = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {rows.map((row) => (
-                                                <StyledTableRow key={row.question}>
-                                                    <StyledTableCell component="th" scope="row">
-                                                        {row.question}
-                                                    </StyledTableCell>
-                                                    <StyledTableCell align="right">{row.answer}</StyledTableCell>
-                                                    <StyledTableCell align="right">{row.updated}</StyledTableCell>
-                                                    <StyledTableCell align="right">{row.grade}</StyledTableCell>
-                                                    <StyledTableCell align="right">
-                                                        <div className={style.buttons}>
-                                                            <Button onClick={() => deleteCard(row._id)}
-                                                                    variant="outlined"
-                                                                    color="error"
-                                                                    sx={{
-                                                                        width: 30,
-                                                                        height: 25,
-                                                                    }}>
-                                                                Delete
-                                                            </Button>
-                                                            <Button onClick={() => {
-                                                                editButton(row._id)
-                                                            }}
-                                                                    variant="contained"
-                                                                    color="success"
-                                                                    sx={{
-                                                                        width: 30,
-                                                                        height: 25,
-                                                                    }}>
-                                                                Edit
-                                                            </Button>
-                                                        </div>
-                                                    </StyledTableCell>
-                                                </StyledTableRow>
+                                            {rows.map((card) => (
+                                                <Card card={card} deleteCard={deleteCard} key={card._id} />
                                             ))}
                                         </TableBody>
                                     </Table>

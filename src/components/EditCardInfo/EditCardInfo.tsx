@@ -11,10 +11,20 @@ import style from './EditCardInfo.module.css';
 import { Box, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { newPasswordTC } from '../../Redux/NewPasswordReducer';
+import { useNavigate } from 'react-router-dom';
+import { CardsApi } from '../../api/cards-api';
+import { useAppDispatch } from '../../Redux/hooks';
+import { setMessageAC } from '../../Redux/AppReducer';
 
 export const EditCardInfo = React.memo(() => {
+    const dispatch = useAppDispatch();
+
     const [question, setQuestion] = React.useState<string>('');
     const [answer, setAnswer] = React.useState<string>('');
+
+    let navigate = useNavigate();
+
+    const {packId} = useParams();
 
     const onChangeQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuestion(e.target.value);
@@ -22,6 +32,26 @@ export const EditCardInfo = React.memo(() => {
 
     const onChangeAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAnswer(e.target.value);
+    }
+
+    const onCreateNewCard = async () => {
+        // CardsApi.createCard({
+        //     cardsPack_id: packId,
+        //     question,
+        //     answer,
+        // })
+        // .then((res) => console.log(res))
+
+        try {
+            await CardsApi.createCard({
+                cardsPack_id: packId,  
+                question,
+                answer,
+            })
+          } catch (error: any) {
+            dispatch(setMessageAC(error.response.data.error, true))
+            console.log(error.response.data.error);
+          }
     }
 
     return (
@@ -67,13 +97,17 @@ export const EditCardInfo = React.memo(() => {
                 <Box sx={{width: '100%', justifyContent: 'space-around', display: 'flex', marginTop: '81px'}}>
                     <Button 
                         sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
-                        variant="contained">
+                        variant="contained"
+                        onClick={() => navigate(-1)}
+                        >
                         Cancel
                     </Button>
 
                     <Button 
                         sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
-                        variant="contained">
+                        variant="contained"
+                        onClick={() => onCreateNewCard()}
+                        >
                         Save
                     </Button>
                 </Box>

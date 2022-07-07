@@ -30,7 +30,14 @@ export type cardType = {
     "answerImg": string,
     "answerVideo": string,
     "questionImg": string,
-    "questionVideo": string
+    "questionVideo": string,
+    "isEditCard": boolean,
+}
+
+export type NewCardType = {
+    cardsPack_id?: string
+    question: string
+    answer: string
 }
 
 type ResponseType = {
@@ -46,9 +53,22 @@ type ResponseType = {
 }
 
 
+
+
 export const CardsApi = {
     getCards(data: CardsParamsType) {
         return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id);
     },
 
+    deleteCard(id: string) {
+        return instance.delete(`/cards/card?id=${id}`);
+    },
+
+    createCard(data: NewCardType) {
+        return instance.post('/cards/card', data);
+    },
+
+    editCard(data: any) {
+        return instance.put('/cards/card', data);
+    }
 }

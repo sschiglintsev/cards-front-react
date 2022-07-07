@@ -1,5 +1,4 @@
 import { Alert } from "@mui/material";
-import React, { useEffect } from "react";
 import { setMessageAC } from "../../Redux/AppReducer";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 
@@ -19,11 +18,9 @@ const Error = () => {
     }
 
     return (
-        <div>
             <Alert variant="filled" severity={errorStatus ? "error" : "success"}>
                 {infoMessage}
             </Alert>
-        </div>
     )
 }
 
