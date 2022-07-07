@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import style from "./Cards.module.css";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -18,7 +18,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import {useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
+import {setCardsTC} from "../../Redux/CardsReducer";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -41,30 +43,47 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-) {
-    return {name, calories, fat, carbs};
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24),
-    createData('Ice cream sandwich', 237, 9.0, 37),
-
-];
-
 export const Cards = () => {
 
+    const dispatch = useAppDispatch()
+    const cards = useAppSelector(state => state.cards)
+
+    const rows =cards.cards
+    const page =cards.page
+    const pageCount =cards.pageCount
+    const cardsTotalCount =cards.cardsTotalCount
+
+    console.log(pageCount)
+    console.log(cardsTotalCount)
+    console.log(Math.ceil(cardsTotalCount/pageCount))
+
     const {cardsPack_id} = useParams();
+
+    //setCards
+
+    useEffect(() => {
+        dispatch(setCardsTC({cardsPack_id}))
+    }, [])
+
     console.log(cardsPack_id)
 
-    const [page, setPage] = React.useState(1);
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
+    //Pagination
+
+    const [pageValue, setPageValue] = React.useState(page);
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPageValue(value);
     };
+
+    // Buttons func
+
+    const deleteCard = (id: string) => {
+        console.log('delete')
+    }
+
+    const editButton = (id: string) => {
+        console.log('edit')
+    }
+
 
     return (
         <div className={style.Wrapper}>
@@ -110,33 +129,35 @@ export const Cards = () => {
                                         </TableHead>
                                         <TableBody>
                                             {rows.map((row) => (
-                                                <StyledTableRow key={row.name}>
+                                                <StyledTableRow key={row.question}>
                                                     <StyledTableCell component="th" scope="row">
-                                                        {row.name}
+                                                        {row.question}
                                                     </StyledTableCell>
-                                                    <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                                                    <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                                                    <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                                                    <StyledTableCell align="right">{row.answer}</StyledTableCell>
+                                                    <StyledTableCell align="right">{row.updated}</StyledTableCell>
+                                                    <StyledTableCell align="right">{row.grade}</StyledTableCell>
                                                     <StyledTableCell align="right">
                                                         <div className={style.buttons}>
-                                                        <Button
-                                                            variant="outlined"
-                                                            color="error"
-                                                            sx={{
-                                                                width: 30,
-                                                                height: 25,
-                                                            }}>
-                                                            Delete
-                                                        </Button>
-                                                        <Button
-                                                            variant="contained"
-                                                            color="success"
-                                                            sx={{
-                                                                width: 30,
-                                                                height: 25,
-                                                            }}>
-                                                            Edit
-                                                        </Button>
+                                                            <Button onClick={() => deleteCard(row._id)}
+                                                                    variant="outlined"
+                                                                    color="error"
+                                                                    sx={{
+                                                                        width: 30,
+                                                                        height: 25,
+                                                                    }}>
+                                                                Delete
+                                                            </Button>
+                                                            <Button onClick={() => {
+                                                                editButton(row._id)
+                                                            }}
+                                                                    variant="contained"
+                                                                    color="success"
+                                                                    sx={{
+                                                                        width: 30,
+                                                                        height: 25,
+                                                                    }}>
+                                                                Edit
+                                                            </Button>
                                                         </div>
                                                     </StyledTableCell>
                                                 </StyledTableRow>
@@ -148,7 +169,7 @@ export const Cards = () => {
 
                             <div className={style.pagination}>
                                 <Stack spacing={2}>
-                                    <Pagination count={10} page={page} onChange={handleChange}/>
+                                    <Pagination count={Math.ceil(cardsTotalCount/pageCount)} page={pageValue} onChange={handleChangePage}/>
                                 </Stack>
                             </div>
 

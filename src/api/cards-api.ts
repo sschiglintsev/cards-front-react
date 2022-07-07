@@ -3,13 +3,13 @@ import {instance} from "./axiosConf";
 
 export type CardsParamsType = {
     cardAnswer?: string,
-    cardQuestion: string,
-    cardsPack_id:string,
-    min: number,
-    max: number,
-    sortCards:string;
-    page:number,
-    pageCount:number
+    cardQuestion?: string,
+    cardsPack_id?:string,
+    min?: number,
+    max?: number,
+    sortCards?:string;
+    page?:number,
+    pageCount?:number
 }
 
 export type cardType = {
@@ -34,14 +34,21 @@ export type cardType = {
 }
 
 type ResponseType = {
-"cards": cardType[]
+"cards": cardType[],
+    packUserId:string,
+    page:number,
+    pageCount:number,
+    cardsTotalCount:number,
+    minGrade:number,
+    maxGrade:number,
+    token:string,
+    tokenDeathTime:number
 }
 
 
 export const CardsApi = {
     getCards(data: CardsParamsType) {
-        // @ts-ignore
-        return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card', data);
+        return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id);
     },
 
 }
