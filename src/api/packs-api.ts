@@ -5,7 +5,7 @@ import { instance } from "./app-api";
 export const packsAPI = {
     getPacks(payload: PacksRequestType) {
        // @ts-ignore
-        return instance.get(`/cards/pack`, payload);
+        return instance.get(`/cards/pack` + '?min=' + payload.min + '?max=' + payload.max + '?page=' + payload.page + '?pageCount=' + payload.pageCount );
     }
 }
 
@@ -19,7 +19,7 @@ type PacksRequestType = {
     user_id?: string,
 }
 
-type RegisterResponseType = {
+type PacksResponseType = {
     cardPacks: [ 
         { 
         _id: string

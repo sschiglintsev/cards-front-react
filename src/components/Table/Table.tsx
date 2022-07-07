@@ -15,7 +15,7 @@ const PacksListTable = () => {
     let packs = useAppSelector(state => state.profile.packs);
 
     useEffect(() => {
-        dispatch(getPacksTC(page))
+        dispatch(getPacksTC(page + 1))
     }, [page, dispatch])
    
 

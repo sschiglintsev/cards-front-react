@@ -27,7 +27,7 @@ export type InitialStateType = {
 
 const initialState: InitialStateType = {
     packs: [],
-    minMax: []
+    minMax: [1, 130]
 }
 
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
@@ -56,7 +56,7 @@ export const getPacksTC = (page: number): AppThunk => async (dispatch, getState)
         sortPacks: "",// не обязательно 
         page: page, // не обязательно 
         pageCount: 8, // не обязательно 
-        user_id: state.login.,
+        user_id: "",
     }
         let result = await packsAPI.getPacks(data);
         console.log(result.data.cardPacks);
