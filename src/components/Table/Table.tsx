@@ -46,7 +46,7 @@ const PacksListTable = () => {
         },
     ];
 
-    const rows = packs.map((p: PackType) => ({id: p._id, name: p.name, cards: p.cardsCount, lastUpdated: p.updated, createdBy: p.user_id, actions: ""}));
+    const rows = packs.map((p: PackType) => ({id: p._id, name: p.name, cards: p.cardsCount, lastUpdated: p.updated, createdBy: p.user_name, actions: ""}));
 
     return (
         <div className={s.Table}>
