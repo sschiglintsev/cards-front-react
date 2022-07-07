@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../Redux/hooks';
 import { SetMinMaxAC } from '../../Redux/ProfileReducer';
 
 const SliderComponent = () => {
-    const [value, setValue] = useState<number[]>([1, 10]);
+    const [value, setValue] = useState<number[]>([1, 130]);
     let dispatch = useAppDispatch();
 
     const handleChange = (event: Event, newValue: number | number[]) => {

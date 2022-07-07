@@ -5,7 +5,7 @@ import { instance } from "./app-api";
 export const packsAPI = {
     getPacks(payload: PacksRequestType) {
        // @ts-ignore
-        return instance.get(`/cards/pack` + '?min=' + payload.min + '?max=' + payload.max + '?page=' + payload.page + '?pageCount=' + payload.pageCount );
+        return instance.get(`/cards/pack?pageCount=${payload.pageCount}&page=${payload.page}`);
     }
 }
 

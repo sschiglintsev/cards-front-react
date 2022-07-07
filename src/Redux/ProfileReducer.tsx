@@ -23,17 +23,19 @@ export type PackType = {
 export type InitialStateType = {
     packs: PackType[]
     minMax: number[]
+    totalCount: number
 }
 
 const initialState: InitialStateType = {
     packs: [],
-    minMax: [1, 130]
+    minMax: [1, 130],
+    totalCount: 1
 }
 
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
     switch (action.type) {
         case 'PROFILE/Get-Packs': {
-            return { ...state, packs: action.packs }
+            return { ...state, packs: action.packs, totalCount: action.totalCount}
         }
         case 'PROFILE/Set-MinMax': {
             console.log(action.value);
@@ -56,18 +58,18 @@ export const getPacksTC = (page: number): AppThunk => async (dispatch, getState)
         sortPacks: "",// не обязательно 
         page: page, // не обязательно 
         pageCount: 8, // не обязательно 
-        user_id: "",
+        user_id: state.login._id,
     }
         let result = await packsAPI.getPacks(data);
         console.log(result.data.cardPacks);
-        dispatch(GetPacksAC(result.data.cardPacks));
+        dispatch(GetPacksAC(result.data.cardPacks, result.data.cardPacksTotalCount));
     } catch (error) {
 
     }
 
 }
 
-export const GetPacksAC = (packs: PackType[]) => ({ type: 'PROFILE/Get-Packs', packs } as const)
+export const GetPacksAC = (packs: PackType[], totalCount: number) => ({ type: 'PROFILE/Get-Packs', packs, totalCount } as const)
 
 
 export type GetPacksActionType = ReturnType<typeof GetPacksAC>

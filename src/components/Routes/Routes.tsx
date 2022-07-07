@@ -21,6 +21,7 @@ export const PATH = {
     TEST:'/test',
     CHECK_EMAIL: '/check-email',
     PACKS_LIST: '/packs-list',
+    PROFILE_CARD: '/profile/card'
 }
 
 export const RoutesPage = () => {
@@ -36,10 +37,13 @@ export const RoutesPage = () => {
                 <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword/>}/>
                 <Route path={PATH.REGISTRATION} element={<Registration/>}/>
                 <Route path={PATH.PROFILE} element={<Profile/>}/>
+                <Route path={PATH.PROFILE_CARD}>
+                    <Route path=":cardsPack_id" element={<div>Card</div>}/>
+                </Route>
                 <Route path={PATH.ERROR} element={<Error404/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
-                <Route path="*" element={<Navigate to="/error404"/>}/>
+                {/* <Route path="*" element={<Navigate to="/error404"/>}/> */}
             </Routes>
         </div>
     )

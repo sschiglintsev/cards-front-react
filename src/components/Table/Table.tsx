@@ -7,21 +7,33 @@ import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
 import { getPacksTC, PackType } from '../../Redux/ProfileReducer';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { useNavigate } from 'react-router-dom';
 
 const PacksListTable = () => {
 
     const dispatch = useAppDispatch();
     let [page, setPage] = useState(0);
-    let packs = useAppSelector(state => state.profile.packs);
+    let packs = useAppSelector(state => state.profile.packs)
+    let totalCount = useAppSelector(state => state.profile.totalCount);
+    let pageCount = Math.ceil(totalCount / 8);
 
     useEffect(() => {
         dispatch(getPacksTC(page + 1))
     }, [page, dispatch])
-   
+    let navigate = useNavigate();
 
     const columns: GridColDef[] = [
 
-        { field: 'name', headerName: 'Name', width: 210 },
+        {
+            field: 'name', headerName: 'Name', width: 210,
+            renderCell: (params) => {
+                const onClick = (e: MouseEvent<HTMLDivElement>) => {
+                    e.stopPropagation();
+                    navigate(`/profile/card/${params.id}`);
+                }
+                return <div onClick={onClick}>{params.row.name}</div>
+            }
+        },
         { field: 'cards', headerName: 'Cards', width: 110 },
         { field: 'lastUpdated', headerName: 'Last Updated', width: 150 },
         {
@@ -40,13 +52,14 @@ const PacksListTable = () => {
             renderCell: (params) => {
                 const onClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
+                    //*navigate();
                 }
                 return <Button onClick={onClick}>Learn</Button>
             }
         },
     ];
 
-    const rows = packs.map((p: PackType) => ({id: p._id, name: p.name, cards: p.cardsCount, lastUpdated: p.updated, createdBy: p.user_name, actions: ""}));
+    const rows = packs.map((p: PackType) => ({ id: p._id, name: p.name, cards: p.cardsCount, lastUpdated: p.updated, createdBy: p.user_name, actions: "" }));
 
     return (
         <div className={s.Table}>
@@ -70,7 +83,7 @@ const PacksListTable = () => {
                         Pagination: CustomPagination
                     }}
                     componentsProps={{
-                        pagination: {count: 10, page: page, setPage: setPage}
+                        pagination: { count: pageCount, page: page, setPage: setPage }
                     }}
                 />
             </div>
