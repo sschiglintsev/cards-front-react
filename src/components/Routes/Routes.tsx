@@ -41,7 +41,7 @@ export const RoutesPage = () => {
                 <Route path={PATH.REGISTRATION} element={<Registration/>}/>
                 <Route path={PATH.PROFILE} element={<Profile/>}/>
                 <Route path={PATH.PROFILE_CARD}>
-                    <Route path=":cardsPack_id" element={<div>Card</div>}/>
+                    <Route path=":cardsPack_id" element={<Cards/>}/>
                 </Route>
 
                 <Route path={PATH.CARDS_CARD}>
