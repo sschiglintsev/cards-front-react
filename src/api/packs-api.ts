@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from "axios";
-import { RegisterValuesType } from "../Redux/RegistrationReducer";
-import { instance } from "./app-api";
+
+import { instance } from "./axiosConf";
 
 export const packsAPI = {
     getPacks(payload: PacksRequestType) {
