@@ -9,6 +9,7 @@ import {Registration} from "../Registration/Registration";
 import {Profile} from "../Profile/Profile";
 import {Test} from "../Test/Test";
 import { CheckEmail } from '../CheckEmail/CheckEmail';
+import {Cards} from "../Cards/Cards";
 
 export const PATH = {
     MAIN: '/main',
@@ -21,7 +22,8 @@ export const PATH = {
     TEST:'/test',
     CHECK_EMAIL: '/check-email',
     PACKS_LIST: '/packs-list',
-    PROFILE_CARD: '/profile/card'
+    PROFILE_CARD: '/profile/card',
+    CARDS_CARD:'/cards/card',
 }
 
 
@@ -40,6 +42,10 @@ export const RoutesPage = () => {
                 <Route path={PATH.PROFILE} element={<Profile/>}/>
                 <Route path={PATH.PROFILE_CARD}>
                     <Route path=":cardsPack_id" element={<div>Card</div>}/>
+                </Route>
+
+                <Route path={PATH.CARDS_CARD}>
+                    <Route path=":cardsPack_id" element={<Cards/>}/>
                 </Route>
                 <Route path={PATH.ERROR} element={<Error404/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
