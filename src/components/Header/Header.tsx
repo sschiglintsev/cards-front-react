@@ -1,19 +1,36 @@
-import React from 'react'
-import {NavLink} from "react-router-dom";
-import c from './Header.module.css'
-import {PATH} from "../Routes/Routes";
+import React, { useEffect, useState } from 'react'
+import { NavLink, useLocation } from "react-router-dom";
+import s from './Header.module.css'
+import { PATH } from "../Routes/Routes";
 
 export const Header = () => {
+    let [isVisible, setIsVisible] = useState(true);
+    let location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === PATH.LOGIN ||
+            location.pathname === PATH.REGISTRATION ||
+            location.pathname === PATH.RECOVERY_PASSWORD) {
+            setIsVisible(false)
+        } else {
+            setIsVisible(true)
+        }
+    }, [location])
+
     return (
-        <div >
-            <NavLink to={PATH.MAIN} className={c.link} >MAIN</NavLink>----
-            <NavLink to={PATH.LOGIN} className={c.link} >LOGIN</NavLink>----
-            <NavLink to={PATH.NEW_PASSWORD} className={c.link} >NEW_PASSWORD</NavLink>----
-            <NavLink to={PATH.RECOVERY_PASSWORD} className={c.link} >RECOVERY_PASSWORD</NavLink>----
-            <NavLink to={PATH.REGISTRATION} className={c.link} >REGISTRATION</NavLink>----
-            <NavLink to={PATH.PROFILE} className={c.link} >PROFILE</NavLink>----
-            <NavLink to={PATH.ERROR} className={c.link} >ERROR</NavLink>----
-            <NavLink to={PATH.TEST} className={c.link} >TEST</NavLink>----
+        <div className={isVisible ? s.Header : s.Invisible}>
+            <div className={s.Logo}>It-incubator</div>
+            <div className={s.Wrapper}>
+                <NavLink to={PATH.PACKS_LIST} className={({ isActive }) => isActive ? s.ActiveLink : s.Link}>
+                    <i className="fa-brands fa-buffer fa-xl"></i>
+                    Packs list
+                    </NavLink>
+                <NavLink to={PATH.PROFILE} className={({ isActive }) => isActive ? s.ActiveLink : s.Link}>
+                    <i className="fa-regular fa-user fa-xl"></i>
+                    Profile
+                </NavLink>
+
+            </div>
         </div>
     )
 }

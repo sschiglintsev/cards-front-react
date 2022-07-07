@@ -2,6 +2,7 @@ import { Alert } from "@mui/material";
 import React, { useEffect } from "react";
 import { setMessageAC } from "../../Redux/AppReducer";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import s from "./Error.module.css"
 
 const Error = () => {
     const dispatch = useAppDispatch();
@@ -19,7 +20,7 @@ const Error = () => {
     }
 
     return (
-        <div>
+        <div className={s.Error}>
             <Alert variant="filled" severity={errorStatus ? "error" : "success"}>
                 {infoMessage}
             </Alert>

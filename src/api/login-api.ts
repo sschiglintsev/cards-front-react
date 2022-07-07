@@ -8,6 +8,7 @@ export type LoginParamsType = {
 }
 
 type ResponseType = {
+    _id: string;
     email: string;
     name: string;
     avatar?: string;
