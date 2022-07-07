@@ -43,8 +43,10 @@ export const RoutesPage = () => {
                 <Route path={PATH.ERROR} element={<Error404/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
-                {/* <Route path="*" element={<Navigate to="/error404"/>}/> */}
+                <Route path="*" element={<Navigate to="/error404"/>}/>
             </Routes>
         </div>
     )
 }
+
+//Routes
