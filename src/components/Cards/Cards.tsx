@@ -48,14 +48,14 @@ export const Cards = () => {
     const dispatch = useAppDispatch()
     const cards = useAppSelector(state => state.cards)
 
-    const rows =cards.cards
-    const page =cards.page
-    const pageCount =cards.pageCount
-    const cardsTotalCount =cards.cardsTotalCount
+    const rows = cards.cards
+    const page = cards.page
+    const pageCount = cards.pageCount
+    const cardsTotalCount = cards.cardsTotalCount
 
     console.log(pageCount)
     console.log(cardsTotalCount)
-    console.log(Math.ceil(cardsTotalCount/pageCount))
+    console.log(Math.ceil(cardsTotalCount / pageCount))
 
     const {cardsPack_id} = useParams();
 
@@ -169,7 +169,8 @@ export const Cards = () => {
 
                             <div className={style.pagination}>
                                 <Stack spacing={2}>
-                                    <Pagination count={Math.ceil(cardsTotalCount/pageCount)} page={pageValue} onChange={handleChangePage}/>
+                                    <Pagination count={cardsTotalCount > 0 ? Math.ceil(cardsTotalCount / pageCount) : 0}
+                                                page={pageValue} onChange={handleChangePage}/>
                                 </Stack>
                             </div>
 

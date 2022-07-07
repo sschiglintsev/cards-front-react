@@ -44,7 +44,6 @@ type CardsActionSType = setMessageAType
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
     CardsApi.getCards(data)
         .then(response => {
-            debugger
             dispatch(setCardsAC(response.data.cards, response.data.page, response.data.pageCount, response.data.cardsTotalCount))
         })
         .catch(() => {
