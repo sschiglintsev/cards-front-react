@@ -10,6 +10,7 @@ import {Profile} from "../Profile/Profile";
 import {Test} from "../Test/Test";
 import { CheckEmail } from '../CheckEmail/CheckEmail';
 import {Cards} from "../Cards/Cards";
+import {EditCardInfo} from "../EditCardInfo/EditCardInfo";
 
 export const PATH = {
     MAIN: '/main',
@@ -22,6 +23,8 @@ export const PATH = {
     TEST:'/test',
     CHECK_EMAIL: '/check-email',
     CARD:'/cards/card',
+    PACKS_LIST:'/cards/card',
+    ADD_NEW_CARD: '/cards/card/create-card',
 }
 
 export const RoutesPage = () => {
@@ -33,6 +36,9 @@ export const RoutesPage = () => {
                 <Route path={PATH.LOGIN} element={<Login/>}/>
                 <Route path={PATH.NEW_PASSWORD}>
                     <Route path=":userToken" element={<NewPassword/>}/>
+                </Route>
+                <Route path={PATH.ADD_NEW_CARD}>
+                    <Route path=":packId" element={<EditCardInfo/>}/>
                 </Route>
                 <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword/>}/>
                 <Route path={PATH.REGISTRATION} element={<Registration/>}/>
