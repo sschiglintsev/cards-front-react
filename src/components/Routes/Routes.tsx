@@ -8,7 +8,7 @@ import {RecoveryPassword} from "../RecoveryPassword/RecoveryPassword";
 import {Registration} from "../Registration/Registration";
 import {Profile} from "../Profile/Profile";
 import {Test} from "../Test/Test";
-import { CheckEmail } from '../CheckEmail/CheckEmail';
+import {CheckEmail} from '../CheckEmail/CheckEmail';
 import {Cards} from "../Cards/Cards";
 import {EditCardInfo} from "../EditCardInfo/EditCardInfo";
 
@@ -16,15 +16,16 @@ export const PATH = {
     MAIN: '/main',
     LOGIN: '/login',
     ERROR: '/error404',
-    NEW_PASSWORD:'/new-password',
-    REGISTRATION:'/registration',
-    PROFILE:'/profile',
-    RECOVERY_PASSWORD:'/recovery-password',
-    TEST:'/test',
+    NEW_PASSWORD: '/new-password',
+    REGISTRATION: '/registration',
+    PROFILE: '/profile',
+    RECOVERY_PASSWORD: '/recovery-password',
+    TEST: '/test',
     CHECK_EMAIL: '/check-email',
-    CARD:'/cards/card',
-    PACKS_LIST:'/cards/card',
+    CARD: '/cards/card',
     ADD_NEW_CARD: '/cards/card/create-card',
+    PACKS_LIST: '/packs-list',
+    PROFILE_CARD: '/profile/card'
 }
 
 export const RoutesPage = () => {
@@ -47,7 +48,7 @@ export const RoutesPage = () => {
                 <Route path={PATH.TEST} element={<Test/>}/>
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
                 <Route path="*" element={<Navigate to="/error404"/>}/>
-                <Route path={PATH.CARD}>
+                <Route path={PATH.PROFILE_CARD}>
                     <Route path=":cardsPack_id" element={<Cards/>}/>
                 </Route>
             </Routes>

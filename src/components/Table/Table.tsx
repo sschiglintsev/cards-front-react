@@ -2,7 +2,6 @@ import React, {MouseEvent, MouseEventHandler, useEffect, useState} from 'react'
 import s from './Table.module.css';
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
 import {Button, Input, InputAdornment, Pagination} from '@mui/material';
-import {useDispatch} from 'react-redux';
 import {packsAPI} from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
 import {getPacksTC, PackType} from '../../Redux/ProfileReducer';

@@ -44,7 +44,7 @@ type PropsType = {
         _id: string
         isEditCard: boolean
     }
-    
+
     deleteCard: (id: string) => void
     // editButton: (id: string) => void
 }
