@@ -4,28 +4,41 @@ import {Dispatch} from "redux";
 
 export type InitialStateType = {
     cards: cardType[],
-    page:number,
-    pageCount:number,
-    cardsTotalCount:number,
+    page: number,
+    pageCount: number,
+    cardsTotalCount: number,
+    namePack: string
 }
 
 const initialState: InitialStateType = {
-    cards:[],
-    page:0,
-    pageCount:0,
-    cardsTotalCount:0,
+    cards: [],
+    page: 0,
+    pageCount: 0,
+    cardsTotalCount: 0,
+    namePack: ''
 }
 
 export const CardsReduser = (state: InitialStateType = initialState, action: CardsActionSType): InitialStateType => {
     switch (action.type) {
         case "cards/ADD-CARDS":
-            return {...state, cards:action.payload.data, page:action.payload.page, pageCount:action.payload.pageCount, cardsTotalCount:action.payload.cardsTotalCount}
+            return {
+                ...state,
+                cards: action.payload.data,
+                page: action.payload.page,
+                pageCount: action.payload.pageCount,
+                cardsTotalCount: action.payload.cardsTotalCount
+            }
+        case "cards/CLEAR-CARDS":
+            return {...state, cards: [], namePack: '', pageCount:0, page:0}
+        case "cards/ADD-NAME-PACK":
+            debugger
+            return {...state, namePack: action.payload.name}
         default:
-            return {...state}
+            return state
     }
 }
 
-export const setCardsAC = (data:cardType[],page:number, pageCount:number,cardsTotalCount:number ) =>
+export const setCardsAC = (data: cardType[], page: number, pageCount: number, cardsTotalCount: number) =>
     ({
         type: 'cards/ADD-CARDS',
         payload: {
@@ -33,13 +46,29 @@ export const setCardsAC = (data:cardType[],page:number, pageCount:number,cardsTo
             page,
             pageCount,
             cardsTotalCount
-
         }
     } as const)
 
-type setMessageAType = ReturnType<typeof setCardsAC>
+export const clearCardsAC = () =>
+    ({
+        type: 'cards/CLEAR-CARDS',
+    } as const)
 
-type CardsActionSType = setMessageAType
+export const addNamePackAC = (name: string) =>
+    ({
+        type: 'cards/ADD-NAME-PACK',
+        payload: {
+            name
+        }
+    } as const)
+
+type setMessageType = ReturnType<typeof setCardsAC>
+
+type addNamePackACType = ReturnType<typeof addNamePackAC>
+
+type clearCardsACType = ReturnType<typeof clearCardsAC>
+
+type CardsActionSType = setMessageType | addNamePackACType | clearCardsACType
 
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
     CardsApi.getCards(data)
@@ -48,4 +77,8 @@ export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispat
         })
         .catch(() => {
         })
+}
+
+export const clearCardsTC = (): AppThunk => (dispatch: Dispatch) => {
+    dispatch(clearCardsAC())
 }

@@ -20,7 +20,7 @@ import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
 import {useParams, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
-import {setCardsTC} from "../../Redux/CardsReducer";
+import { clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -72,8 +72,9 @@ export const Cards = () => {
     let navigate = useNavigate();
 
     const [pageValue, setPageValue] = React.useState(page);
+
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        navigate(`/cards/card/${cardsPack_id}&page=${value}`)
+        navigate(`/profile/card/${cardsPack_id}&page=${value}`)
         setPageValue(value);
 
     };
@@ -88,6 +89,11 @@ export const Cards = () => {
         console.log('edit')
     }
 
+    // Back in Paks list
+     const backInPacks = () => {
+         navigate(`/profile`)
+         dispatch(clearCardsTC())
+     }
 
     return (
         <div className={style.Wrapper}>
@@ -96,7 +102,7 @@ export const Cards = () => {
                     <Grid item marginTop={15}>
                         <Paper className={style.Paper}>
 
-                            <div className={style.backPack}>
+                            <div className={style.backPack} onClick={backInPacks}>
                                 <ArrowBackIcon/>
                                 <Typography
                                     sx={{flex: '1 1 100%'}}
@@ -104,7 +110,7 @@ export const Cards = () => {
                                     id="tableTitle"
                                     component="div"
                                 >
-                                    Pack Name
+                                    {cards.namePack}
                                 </Typography>
                             </div>
 

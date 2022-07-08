@@ -41,7 +41,7 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
         default:
-            return {...state}
+            return state
     }
 }
 

@@ -28,6 +28,7 @@
     justify-content: left;
     align-items: center;
     margin-bottom: 20px;
+    cursor: pointer
 }
 
 .pagination {
