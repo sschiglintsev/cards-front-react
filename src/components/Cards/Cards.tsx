@@ -149,32 +149,38 @@ export const Cards = () => {
 
                             <div className={style.TableContainer}>
                                 <TableContainer component={Paper}>
-                                    <Table sx={{minWidth: 700}} aria-label="customized table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <StyledTableCell>Question</StyledTableCell>
-                                                <StyledTableCell align="right">Answer</StyledTableCell>
-                                                <StyledTableCell align="right">Last Update</StyledTableCell>
-                                                <StyledTableCell align="right">Grade</StyledTableCell>
-                                                <StyledTableCell align="right">Actions</StyledTableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {rows.map((card) => (
-                                                <Card card={card} deleteCard={deleteCard} key={card._id} />
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                    {cardsTotalCount > 0
+                                        ? <Table sx={{minWidth: 700}} aria-label="customized table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell>Question</StyledTableCell>
+                                                    <StyledTableCell align="right">Answer</StyledTableCell>
+                                                    <StyledTableCell align="right">Last Update</StyledTableCell>
+                                                    <StyledTableCell align="right">Grade</StyledTableCell>
+                                                    <StyledTableCell align="right">Actions</StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {rows.map((card) => (
+                                                    <Card card={card} deleteCard={deleteCard} key={card._id}/>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                        : <></>
+                                    }
                                 </TableContainer>
                             </div>
 
-                            <div className={style.pagination}>
-                                <Stack spacing={2}>
-                                    <Pagination
-                                        count={cardsTotalCount > 0 ? Math.ceil(cardsTotalCount / pageCount) : 0}
-                                        page={pageValue} onChange={handleChangePage}/>
-                                </Stack>
-                            </div>
+                            {cardsTotalCount > 0
+                                ? <div className={style.pagination}>
+                                    <Stack spacing={2}>
+                                        <Pagination
+                                            count={cardsTotalCount > 0 ? Math.ceil(cardsTotalCount / pageCount) : 0}
+                                            page={pageValue} onChange={handleChangePage}/>
+                                    </Stack>
+                                </div>
+                                : <></>
+                            }
 
                         </Paper>
                     </Grid>
