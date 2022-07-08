@@ -18,9 +18,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
-import { clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
+import {setCardsTC} from "../../Redux/CardsReducer";
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -63,20 +63,15 @@ export const Cards = () => {
 
     useEffect(() => {
         dispatch(setCardsTC({cardsPack_id}))
-    }, [cardsPack_id])
+    }, [])
 
     console.log(cardsPack_id)
 
     //Pagination
 
-    let navigate = useNavigate();
-
     const [pageValue, setPageValue] = React.useState(page);
-
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        navigate(`/profile/card/${cardsPack_id}&page=${value}`)
         setPageValue(value);
-
     };
 
     // Buttons func
@@ -89,11 +84,6 @@ export const Cards = () => {
         console.log('edit')
     }
 
-    // Back in Paks list
-     const backInPacks = () => {
-         navigate(`/profile`)
-         dispatch(clearCardsTC())
-     }
 
     return (
         <div className={style.Wrapper}>
@@ -102,7 +92,7 @@ export const Cards = () => {
                     <Grid item marginTop={15}>
                         <Paper className={style.Paper}>
 
-                            <div className={style.backPack} onClick={backInPacks}>
+                            <div className={style.backPack}>
                                 <ArrowBackIcon/>
                                 <Typography
                                     sx={{flex: '1 1 100%'}}
@@ -110,7 +100,7 @@ export const Cards = () => {
                                     id="tableTitle"
                                     component="div"
                                 >
-                                    {cards.namePack}
+                                    Pack Name
                                 </Typography>
                             </div>
 
@@ -127,72 +117,62 @@ export const Cards = () => {
 
                             <div className={style.TableContainer}>
                                 <TableContainer component={Paper}>
-
-                                    {cardsTotalCount > 0
-                                        ? <Table sx={{minWidth: 700}} aria-label="customized table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <StyledTableCell>Question</StyledTableCell>
-                                                    <StyledTableCell align="right">Answer</StyledTableCell>
-                                                    <StyledTableCell align="right">Last Update</StyledTableCell>
-                                                    <StyledTableCell align="right">Grade</StyledTableCell>
-                                                    <StyledTableCell align="right">Actions</StyledTableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {rows.map((row) => (
-                                                    <StyledTableRow key={row.question}>
-                                                        <StyledTableCell component="th" scope="row">
-                                                            {row.question}
-                                                        </StyledTableCell>
-                                                        <StyledTableCell align="right">{row.answer}</StyledTableCell>
-                                                        <StyledTableCell align="right">{row.updated}</StyledTableCell>
-                                                        <StyledTableCell align="right">{row.grade}</StyledTableCell>
-                                                        <StyledTableCell align="right">
-                                                            <div className={style.buttons}>
-                                                                <Button onClick={() => deleteCard(row._id)}
-                                                                        variant="outlined"
-                                                                        color="error"
-                                                                        sx={{
-                                                                            width: 30,
-                                                                            height: 25,
-                                                                        }}>
-                                                                    Delete
-                                                                </Button>
-                                                                <Button onClick={() => {
-                                                                    editButton(row._id)
-                                                                }}
-                                                                        variant="contained"
-                                                                        color="success"
-                                                                        sx={{
-                                                                            width: 30,
-                                                                            height: 25,
-                                                                        }}>
-                                                                    Edit
-                                                                </Button>
-                                                            </div>
-                                                        </StyledTableCell>
-                                                    </StyledTableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                        : <></>
-                                    }
-
+                                    <Table sx={{minWidth: 700}} aria-label="customized table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <StyledTableCell>Question</StyledTableCell>
+                                                <StyledTableCell align="right">Answer</StyledTableCell>
+                                                <StyledTableCell align="right">Last Update</StyledTableCell>
+                                                <StyledTableCell align="right">Grade</StyledTableCell>
+                                                <StyledTableCell align="right">Actions</StyledTableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {rows.map((row) => (
+                                                <StyledTableRow key={row.question}>
+                                                    <StyledTableCell component="th" scope="row">
+                                                        {row.question}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell align="right">{row.answer}</StyledTableCell>
+                                                    <StyledTableCell align="right">{row.updated}</StyledTableCell>
+                                                    <StyledTableCell align="right">{row.grade}</StyledTableCell>
+                                                    <StyledTableCell align="right">
+                                                        <div className={style.buttons}>
+                                                            <Button onClick={() => deleteCard(row._id)}
+                                                                    variant="outlined"
+                                                                    color="error"
+                                                                    sx={{
+                                                                        width: 30,
+                                                                        height: 25,
+                                                                    }}>
+                                                                Delete
+                                                            </Button>
+                                                            <Button onClick={() => {
+                                                                editButton(row._id)
+                                                            }}
+                                                                    variant="contained"
+                                                                    color="success"
+                                                                    sx={{
+                                                                        width: 30,
+                                                                        height: 25,
+                                                                    }}>
+                                                                Edit
+                                                            </Button>
+                                                        </div>
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
                                 </TableContainer>
                             </div>
 
-                            {cardsTotalCount > 0
-                                ? <div className={style.pagination}>
-                                    <Stack spacing={2}>
-                                        <Pagination
-                                            count={cardsTotalCount > 0 ? Math.ceil(cardsTotalCount / pageCount) : 0}
-                                            page={pageValue} onChange={handleChangePage}/>
-                                    </Stack>
-                                </div>
-                                : <></>
-                            }
-
+                            <div className={style.pagination}>
+                                <Stack spacing={2}>
+                                    <Pagination count={cardsTotalCount > 0 ? Math.ceil(cardsTotalCount / pageCount) : 0}
+                                                page={pageValue} onChange={handleChangePage}/>
+                                </Stack>
+                            </div>
 
                         </Paper>
                     </Grid>

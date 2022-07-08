@@ -31,6 +31,10 @@
     cursor: pointer
 }
 
+.link {
+    text-decoration: none;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -40,4 +44,9 @@
 .buttons {
     display: flex;
     justify-content: space-around;
+}
+
+.searchInput {
+    width: 752px;
+    height: 36px;
 }
