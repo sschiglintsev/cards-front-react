@@ -11,18 +11,22 @@ import {Navigate} from "react-router";
 function App() {
 
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector((state) => state.login.isLoggedIn);
+    const isInitialize = useAppSelector((state) => state.login.isInitialize);
 
     useEffect(() => {
         dispatch(AuthMeTC())
     }, []);
 
     return (
-        <div className={style.app}>
-            <Header/>
-            <RoutesPage/>
-            <Error/>
-        </div>
+        <>
+        {isInitialize
+            ?<div className={style.app}>
+                <Header/>
+                <RoutesPage/>
+                <Error/>
+            </div>
+        :<></>}
+        </>
     );
 }
 

@@ -23,6 +23,8 @@ import {clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
 import {PATH} from "../Routes/Routes";
 import {Card} from "./Card/Card";
 import {CardsApi} from "../../api/cards-api";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -49,6 +51,9 @@ export const Cards = () => {
 
     //Search Param in url
     let [searchParams, setSearchParams] = useSearchParams();
+    console.log(searchParams.get(`page`))
+    console.log(Object.fromEntries(searchParams))
+
     let pageStr = searchParams.get('page')
     let valueSearchURLCardAnswer = searchParams.get('cardAnswer')
 
@@ -59,18 +64,12 @@ export const Cards = () => {
 
     const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value)
-        // url.append('cardAnswer',debouncedSearchTerm)
-        // navigate({pathname, search: url.toString()})
-
+        setPageValue(1)
     }
 
     useEffect(() => {
         url.append('cardAnswer', debouncedSearchTerm)
         navigate({pathname, search: url.toString()})
-
-        // if (debouncedSearchTerm) {
-        //     console.log(debouncedSearchTerm)
-        // }
     }, [debouncedSearchTerm]);
 
     //setCards
@@ -99,7 +98,6 @@ export const Cards = () => {
     };
 
     // Buttons func
-
     const deleteCard = (id: string) => {
         CardsApi.deleteCard(id);
     }
@@ -114,33 +112,8 @@ export const Cards = () => {
         dispatch(clearCardsTC())
     }
 
-
-    // //Search
-    // const [searchTerm, setSearchTerm] = useState('');
-    //
-    // const debouncedSearchTerm = useDebounce(searchTerm, 500);
-    //
-    // const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setSearchTerm(event.target.value)
-    //
-    // }
-    //
-    // useEffect(
-    //     () => {
-    //         url.append('cardAnswer',debouncedSearchTerm)
-    //         navigate({pathname, search: url.toString()})
-    //
-    //         if (debouncedSearchTerm) {
-    //             console.log(debouncedSearchTerm)
-    //             // searchCharacters(debouncedSearchTerm)
-    //             //     .then(results => {
-    //             //         setIsSearching(false);
-    //             //         setResults(results);
-    //             //     });
-    //         }
-    //     },
-    //     [debouncedSearchTerm]
-    // );
+    //Sort last update
+    const [lastUpdateValue, setLastUpdateValue] = useState(0)
 
     if (!isLoggedIn) {
         return <Navigate to={PATH.LOGIN} />
@@ -176,7 +149,6 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
-                                        //value={text}
                                         onChange={onChangeSearch}
                                         type='text'
                                         placeholder='Search...'>
@@ -201,7 +173,18 @@ export const Cards = () => {
                                                 <TableRow>
                                                     <StyledTableCell>Question</StyledTableCell>
                                                     <StyledTableCell align="right">Answer</StyledTableCell>
-                                                    <StyledTableCell align="right">Last Update</StyledTableCell>
+                                                    <StyledTableCell align="right">Last Update
+                                                        {lastUpdateValue===0
+                                                            ? <ArrowDownwardIcon sx={{
+                                                                cursor: 'pointer',
+                                                                fontSize: 'medium'
+                                                            }} onClick={()=>setLastUpdateValue(1)}/>
+                                                            : <ArrowUpwardIcon sx={{
+                                                                cursor: 'pointer',
+                                                                fontSize: 'medium'
+                                                            }} onClick={()=>setLastUpdateValue(0)}/>
+                                                        }
+                                                    </StyledTableCell>
                                                     <StyledTableCell align="right">Grade</StyledTableCell>
                                                     <StyledTableCell align="right">Actions</StyledTableCell>
                                                 </TableRow>

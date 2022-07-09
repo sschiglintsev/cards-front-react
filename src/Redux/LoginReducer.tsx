@@ -10,8 +10,9 @@ type InitialStateLoginType = {
     email: string,
     publicCardPacksCount: number,
     message: string,
-    errorStatus: boolean
-    avatar?: string
+    errorStatus: boolean,
+    avatar?: string,
+    isInitialize: boolean
 }
 const initialStateLogin: InitialStateLoginType = {
     _id: '',
@@ -21,7 +22,8 @@ const initialStateLogin: InitialStateLoginType = {
     email: '',
     publicCardPacksCount: NaN,
     message: '',
-    errorStatus: false
+    errorStatus: false,
+    isInitialize: false,
 }
 
 
@@ -40,6 +42,8 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
             }
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
+        case 'login/SET-IS-INITIALIZE-IN':
+            return {...state, isInitialize: !state.isInitialize}
         default:
             return state
     }
@@ -48,6 +52,9 @@ export const LoginReducer = (state: InitialStateLoginType = initialStateLogin, a
 // actions
 export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
+
+export const setIsInitializeAC = () =>
+    ({type: 'login/SET-IS-INITIALIZE-IN'} as const)
 
 export const setProfileAC = (_id: string, name: string, email: string, publicCardPacksCount: number, avatar: string = '') =>
     ({
@@ -76,29 +83,21 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
             dispatch(setMessageAC(error.message, true))
             console.log(error.message)
         })
+
 }
 
-export const AuthMeTC = (): AppThunk => (dispatch: Dispatch) => {
+export const AuthMeTC = (): AppThunk => async (dispatch: Dispatch) => {
 
-    // const response = await LoginApi.authMe()
-    //
-    // try {
-    //     dispatch(setIsLoggedInAC(true))
-    //     dispatch(setProfileAC(response.data._id, response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
-    // } catch (error: any) {
-    //     dispatch(setMessageAC(error.message, true))
-    //     console.log(error.message)
-    // }
-
-    LoginApi.authMe()
-        .then(response => {
-            dispatch(setIsLoggedInAC(true))
-            dispatch(setProfileAC(response.data._id, response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
-        })
-        .catch((error) => {
-            dispatch(setIsLoggedInAC(false))
-            dispatch(setMessageAC(error.message, true))
-        })
+    try {
+        const response = await LoginApi.authMe()
+        dispatch(setIsLoggedInAC(true))
+        dispatch(setProfileAC(response.data._id, response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
+    } catch (error: any) {
+        dispatch(setMessageAC(error.message, true))
+        console.log(error.message)
+    } finally {
+        dispatch(setIsInitializeAC())
+    }
 }
 
 export const logoutTC = (): AppThunk => (dispatch: Dispatch) => {
@@ -113,6 +112,12 @@ export type setIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>
 export type setProfileACType = ReturnType<typeof setProfileAC>
 export type logoutACType = ReturnType<typeof LogoutAC>
 export type setMessageACType = ReturnType<typeof setMessageAC>
+export type setIsInitializeACType = ReturnType<typeof setIsInitializeAC>
 
 
-export type LoginActionsType = setIsLoggedInACType | setProfileACType | logoutACType | setMessageACType
+export type LoginActionsType =
+    setIsLoggedInACType
+    | setProfileACType
+    | logoutACType
+    | setMessageACType
+    | setIsInitializeACType
