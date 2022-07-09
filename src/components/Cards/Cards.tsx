@@ -19,7 +19,7 @@ import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
 import {useParams, useNavigate, NavLink} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
+import useDebounce, {useAppDispatch, useAppSelector} from "../../Redux/hooks";
 import {clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
 import {PATH} from "../Routes/Routes";
 import {Card} from "./Card/Card";
@@ -100,6 +100,32 @@ export const Cards = () => {
         navigate(`/profile`)
         dispatch(clearCardsTC())
     }
+
+    //Search
+    const [searchTerm, setSearchTerm] = useState('');
+    const [results, setResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+
+
+    useEffect(
+        () => {
+            if (debouncedSearchTerm) {
+                setIsSearching(true);
+                console.log(debouncedSearchTerm)
+                // searchCharacters(debouncedSearchTerm)
+                //     .then(results => {
+                //         setIsSearching(false);
+                //         setResults(results);
+                //     });
+            } else {
+                setResults([]);
+            }
+        },
+        [debouncedSearchTerm]
+    );
     return (
         <div className={style.Wrapper}>
             <Container maxWidth="lg">

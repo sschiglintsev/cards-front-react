@@ -1,4 +1,3 @@
-
 import { instance } from "./axiosConf";
 
 export const packsAPI = {

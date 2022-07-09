@@ -78,6 +78,19 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
         })
 }
 
+export const AuthMeTC = (): AppThunk => (dispatch: Dispatch) => {
+
+    LoginApi.authMe()
+        .then(response => {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setProfileAC(response.data._id, response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
+        })
+        .catch((error) => {
+            dispatch(setMessageAC(error.message, true))
+            console.log(error.message)
+        })
+}
+
 export const logoutTC = (): AppThunk => (dispatch: Dispatch) => {
     LoginApi.logout()
         .then(response => {

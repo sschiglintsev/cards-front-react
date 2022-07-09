@@ -1,14 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { Navigate } from "react-router";
 import { PATH } from "../Routes/Routes";
-import SuperButton from "../common/SuperButton/SuperButton";
-import { logoutTC } from "../../Redux/LoginReducer";
+import {logoutTC} from "../../Redux/LoginReducer";
 import s from "./Profile.module.css"
 import user from './user.png'
 import SliderComponent from '../Slider/Slider';
-import { Input, InputAdornment, InputLabel } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import PacksListTable from '../Table/Table';
 
 export const Profile = () => {
@@ -16,7 +13,7 @@ export const Profile = () => {
     const profile = useAppSelector(state => state.login)
     const isLoggedIn = profile.isLoggedIn
 
-    const logout = () => {
+        const logout = () => {
         dispatch(logoutTC())
     }
 
