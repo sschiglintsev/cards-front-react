@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useDeferredValue, useEffect, useState} from 'react';
 import style from "./Cards.module.css";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -19,7 +19,7 @@ import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
 import {useParams, useNavigate, NavLink} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from "../../Redux/hooks";
+import useDebounce, {useAppDispatch, useAppSelector} from "../../Redux/hooks";
 import {clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
 import {PATH} from "../Routes/Routes";
 import {Card} from "./Card/Card";
@@ -80,11 +80,7 @@ export const Cards = () => {
 
     };
 
-    const [text, setText] = useState('');
 
-    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setText(event.target.value);
-    };
     // Buttons func
 
     const deleteCard = (id: string) => {
@@ -100,6 +96,33 @@ export const Cards = () => {
         navigate(`/profile`)
         dispatch(clearCardsTC())
     }
+
+    //Search
+    const [searchTerm, setSearchTerm] = useState('');
+    const [results, setResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+
+
+    useEffect(
+        () => {
+            if (debouncedSearchTerm) {
+                setIsSearching(true);
+                console.log(debouncedSearchTerm)
+                // searchCharacters(debouncedSearchTerm)
+                //     .then(results => {
+                //         setIsSearching(false);
+                //         setResults(results);
+                //     });
+            } else {
+                setResults([]);
+            }
+        },
+        [debouncedSearchTerm]
+    );
+
     return (
         <div className={style.Wrapper}>
             <Container maxWidth="lg">
@@ -130,8 +153,7 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
-                                        value={text}
-                                        onChange={onChangeInput}
+                                        onChange={e => setSearchTerm(e.target.value)}
                                         type='text'
                                         placeholder='Search...'>
                                     </input>
@@ -143,7 +165,6 @@ export const Cards = () => {
                                             Add new card
                                         </Button>
                                     </NavLink>
-
                                 </Box>
                             </div>
 

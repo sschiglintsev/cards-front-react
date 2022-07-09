@@ -61,7 +61,6 @@ export const getPacksTC = (page: number): AppThunk => async (dispatch, getState)
         user_id: state.login._id,
     }
         let result = await packsAPI.getPacks(data);
-        console.log(result.data.cardPacks);
         dispatch(GetPacksAC(result.data.cardPacks, result.data.cardPacksTotalCount));
     } catch (error) {
 
