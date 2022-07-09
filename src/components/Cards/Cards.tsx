@@ -13,12 +13,11 @@ import Typography from '@mui/material/Typography';
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import {Box} from "@mui/material";
-import TextField from "@mui/material/TextField";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import {useParams, useNavigate, NavLink} from 'react-router-dom';
+import {useParams, useNavigate, NavLink, useSearchParams, useLocation, Navigate} from 'react-router-dom';
 import useDebounce, {useAppDispatch, useAppSelector} from "../../Redux/hooks";
 import {clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
 import {PATH} from "../Routes/Routes";
@@ -36,55 +35,69 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({theme}) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
 export const Cards = () => {
 
     const dispatch = useAppDispatch()
-
-    const [redirect, setRedirect] = useState(false);
-
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const cards = useAppSelector(state => state.cards)
 
     const rows = cards.cards
-    const page = cards.page
     const pageCount = cards.pageCount
     const cardsTotalCount = cards.cardsTotalCount
 
     const {cardsPack_id} = useParams();
 
+    //Search Param in url
+    let [searchParams, setSearchParams] = useSearchParams();
+    let pageStr = searchParams.get('page')
+    let valueSearchURLCardAnswer = searchParams.get('cardAnswer')
+
+    //Search
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+    const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value)
+        // url.append('cardAnswer',debouncedSearchTerm)
+        // navigate({pathname, search: url.toString()})
+
+    }
+
+    useEffect(() => {
+        url.append('cardAnswer', debouncedSearchTerm)
+        navigate({pathname, search: url.toString()})
+
+        // if (debouncedSearchTerm) {
+        //     console.log(debouncedSearchTerm)
+        // }
+    }, [debouncedSearchTerm]);
+
     //setCards
 
     useEffect(() => {
-        dispatch(setCardsTC({cardsPack_id}))
-    }, [cardsPack_id])
+        const cardAnswer = valueSearchURLCardAnswer == null ? '' : valueSearchURLCardAnswer
+        const page = pageStr === null ? 1 : parseInt(pageStr, 10)
+
+        dispatch(setCardsTC({cardsPack_id, page, cardAnswer}))
+    }, [cardsPack_id, pageStr, valueSearchURLCardAnswer])
 
 
     //Pagination
 
     let navigate = useNavigate();
+    const {pathname} = useLocation()
 
-    const [pageValue, setPageValue] = React.useState(page);
+    const initPage = pageStr === null ? 1 : parseInt(pageStr, 10)
+    const [pageValue, setPageValue] = React.useState(initPage);
+    const url = new URLSearchParams();
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        navigate(`/profile/card/${cardsPack_id}&page=${value}`)
+        url.append('page', String(value))
+        navigate({pathname, search: url.toString()})
         setPageValue(value);
-
     };
 
-    const [text, setText] = useState('');
-
-    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setText(event.target.value);
-    };
     // Buttons func
 
     const deleteCard = (id: string) => {
@@ -101,31 +114,38 @@ export const Cards = () => {
         dispatch(clearCardsTC())
     }
 
-    //Search
-    const [searchTerm, setSearchTerm] = useState('');
-    const [results, setResults] = useState([]);
-    const [isSearching, setIsSearching] = useState(false);
 
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    // //Search
+    // const [searchTerm, setSearchTerm] = useState('');
+    //
+    // const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    //
+    // const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setSearchTerm(event.target.value)
+    //
+    // }
+    //
+    // useEffect(
+    //     () => {
+    //         url.append('cardAnswer',debouncedSearchTerm)
+    //         navigate({pathname, search: url.toString()})
+    //
+    //         if (debouncedSearchTerm) {
+    //             console.log(debouncedSearchTerm)
+    //             // searchCharacters(debouncedSearchTerm)
+    //             //     .then(results => {
+    //             //         setIsSearching(false);
+    //             //         setResults(results);
+    //             //     });
+    //         }
+    //     },
+    //     [debouncedSearchTerm]
+    // );
 
+    if (!isLoggedIn) {
+        return <Navigate to={PATH.LOGIN} />
+    }
 
-
-    useEffect(
-        () => {
-            if (debouncedSearchTerm) {
-                setIsSearching(true);
-                console.log(debouncedSearchTerm)
-                // searchCharacters(debouncedSearchTerm)
-                //     .then(results => {
-                //         setIsSearching(false);
-                //         setResults(results);
-                //     });
-            } else {
-                setResults([]);
-            }
-        },
-        [debouncedSearchTerm]
-    );
     return (
         <div className={style.Wrapper}>
             <Container maxWidth="lg">
@@ -156,8 +176,8 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
-                                        value={text}
-                                        onChange={onChangeInput}
+                                        //value={text}
+                                        onChange={onChangeSearch}
                                         type='text'
                                         placeholder='Search...'>
                                     </input>

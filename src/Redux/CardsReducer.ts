@@ -1,6 +1,7 @@
 import {CardsApi, CardsParamsType, cardType} from "../api/cards-api";
 import {AppThunk} from "./Store";
 import {Dispatch} from "redux";
+import {AuthMeTC} from "./LoginReducer";
 
 export type InitialStateType = {
     cards: cardType[],
