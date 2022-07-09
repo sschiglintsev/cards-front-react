@@ -1,6 +1,7 @@
 import { AppThunk } from "./Store"
 import { packsAPI } from './../api/packs-api';
 import { number } from "yup";
+import { setIsLoadingAC, setMessageAC } from "./AppReducer";
 
 export type PackType = {
     cardsCount: number
@@ -24,12 +25,14 @@ export type InitialStateType = {
     packs: PackType[]
     minMax: number[]
     totalCount: number
+    packName: string
 }
 
 const initialState: InitialStateType = {
     packs: [],
     minMax: [1, 130],
-    totalCount: 1
+    totalCount: 1,
+    packName: ""
 }
 
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
@@ -42,6 +45,10 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
             
             return {...state, minMax: action.value}
         }
+        case 'PROFILE/Set-PackName': {
+            
+            return {...state, packName: action.packName}
+        }
         default:
             return { ...state }
     }
@@ -49,22 +56,25 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
 
 
 export const getPacksTC = (page: number): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true));
     try {
         let state = getState();
         let data = {
-        packName: "", // не обязательно 
-        min: state.profile.minMax[0], // не обязательно 
-        max: state.profile.minMax[1], // не обязательно 
-        sortPacks: "",// не обязательно 
-        page: page, // не обязательно 
-        pageCount: 8, // не обязательно 
+        packName: state.profile.packName, 
+        min: state.profile.minMax[0], 
+        max: state.profile.minMax[1], 
+        sortPacks: "",
+        page: page,
+        pageCount: 8,
         user_id: state.login._id,
     }
         let result = await packsAPI.getPacks(data);
         console.log(result.data.cardPacks);
         dispatch(GetPacksAC(result.data.cardPacks, result.data.cardPacksTotalCount));
-    } catch (error) {
-
+        dispatch(setIsLoadingAC(false))
+    } catch (error: any) {
+        dispatch(setIsLoadingAC(false));
+        dispatch(setMessageAC(error.response.data.error, true));
     }
 
 }
@@ -78,7 +88,11 @@ export const SetMinMaxAC = (value: number[]) => ({ type: 'PROFILE/Set-MinMax', v
 
 
 export type SetMinMaxActionType = ReturnType<typeof SetMinMaxAC>
+export const SetPackNameAC = (packName: string) => ({ type: 'PROFILE/Set-PackName', packName } as const)
+
+
+export type SetPackNameActionType = ReturnType<typeof SetPackNameAC>
 
 
 export type ProfileActionsType =
-    GetPacksActionType | SetMinMaxActionType;
+    GetPacksActionType | SetMinMaxActionType | SetPackNameActionType;

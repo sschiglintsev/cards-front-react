@@ -1,11 +1,11 @@
-import { FormControl, FormGroup, Grid, Paper, TextField } from '@mui/material';
+import { FormControl, FormGroup, Grid, LinearProgress, Paper, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 import { useFormik } from 'formik';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../Redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { registerUserTC } from '../../Redux/RegistrationReducer';
 import { PATH } from '../Routes/Routes';
 import s from "./Registration.module.css";
@@ -17,9 +17,12 @@ type ErrorType = {
     confirmPassword?: string
 }
 
-export const Registration = () => {
+export const Registration = React.memo(() => {
     let dispatch = useAppDispatch();
-    let isRegistered = useSelector<RootStateType, boolean>(store => store.registration.isRegistered);
+
+    let isRegistered = useAppSelector(store => store.registration.isRegistered);
+    let isLoading = useAppSelector(state => state.app.isLoading);
+
     let navigate = useNavigate();
 
     function onCancelClickHandler() {
@@ -64,6 +67,7 @@ export const Registration = () => {
             <Container maxWidth="lg">
                 <Grid container justifyContent="center" alignItems="center">
                     <Grid item marginTop={15}>
+                        {isLoading && <LinearProgress/>}
                         <Paper className={s.Paper}>
                             <div className={s.Heading}>
                                 It-incubator
@@ -121,4 +125,4 @@ export const Registration = () => {
             </Container>
         </div>
     );
-};
+});
