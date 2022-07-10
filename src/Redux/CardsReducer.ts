@@ -1,7 +1,7 @@
 import {CardsApi, CardsParamsType, cardType} from "../api/cards-api";
 import {AppThunk} from "./Store";
 import {Dispatch} from "redux";
-import {AuthMeTC} from "./LoginReducer";
+import {setIsLoadingAC} from "./AppReducer";
 
 export type InitialStateType = {
     cards: cardType[],
@@ -78,11 +78,15 @@ type changeCardEditStatusType = {
 type CardsActionSType = setCardsAСType | changeCardEditStatusType | addNamePackACType | clearCardsACType
 
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
+    dispatch(setIsLoadingAC(true))
     CardsApi.getCards(data)
         .then(response => {
             dispatch(setCardsAC(response.data.cards, response.data.page, response.data.pageCount, response.data.cardsTotalCount))
         })
         .catch(() => {
+        })
+        .finally(()=>{
+            dispatch(setIsLoadingAC(false))
         })
 }
 

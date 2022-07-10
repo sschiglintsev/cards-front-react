@@ -1,11 +1,9 @@
 import React, { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useEffect, useState } from 'react'
 import s from './Table.module.css';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Button, Input, InputAdornment, Pagination } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
-import { GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
+import {  getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
 import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
@@ -42,8 +40,6 @@ const PacksListTable = () => {
     useEffect(
         () => {
             if (debouncedSearchTerm) {
-                // setIsSearching(true);
-                console.log(debouncedSearchTerm)
                 dispatch(getPacksTC(page));
             }
         },
