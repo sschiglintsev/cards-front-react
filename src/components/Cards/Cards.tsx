@@ -51,26 +51,29 @@ export const Cards = () => {
 
     //Search Param in url
     let [searchParams, setSearchParams] = useSearchParams();
-    console.log(searchParams.get(`page`))
-    console.log(Object.fromEntries(searchParams))
+    // console.log(searchParams.get(`page`))
+    // console.log(Object.fromEntries(searchParams))
 
     let pageStr = searchParams.get('page')
     let valueSearchURLCardAnswer = searchParams.get('cardAnswer')
 
     //Search
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(valueSearchURLCardAnswer);
 
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    // const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value)
+        const value = event.target.value
+        setSearchParams({...Object.fromEntries(searchParams), cardAnswer: value})
         setPageValue(1)
+        setSearchTerm(value)
     }
 
-    useEffect(() => {
-        url.append('cardAnswer', debouncedSearchTerm)
-        navigate({pathname, search: url.toString()})
-    }, [debouncedSearchTerm]);
+    // useEffect(() => {
+    //     // url.append('cardAnswer', debouncedSearchTerm)
+    //     // navigate({pathname, search: url.toString()})
+    //     console.log(debouncedSearchTerm)
+    // }, [debouncedSearchTerm]);
 
     //setCards
 
@@ -85,15 +88,16 @@ export const Cards = () => {
     //Pagination
 
     let navigate = useNavigate();
-    const {pathname} = useLocation()
+    //const {pathname} = useLocation()
 
     const initPage = pageStr === null ? 1 : parseInt(pageStr, 10)
-    const [pageValue, setPageValue] = React.useState(initPage);
-    const url = new URLSearchParams();
+    const [pageValue, setPageValue] = useState(initPage);
+    //const url = new URLSearchParams();
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        url.append('page', String(value))
-        navigate({pathname, search: url.toString()})
+        // url.append('page', String(value))
+        // navigate({pathname, search: url.toString()})
+        setSearchParams({...Object.fromEntries(searchParams), page: String(value)})
         setPageValue(value);
     };
 
@@ -116,7 +120,7 @@ export const Cards = () => {
     const [lastUpdateValue, setLastUpdateValue] = useState(0)
 
     if (!isLoggedIn) {
-        return <Navigate to={PATH.LOGIN} />
+        return <Navigate to={PATH.LOGIN}/>
     }
 
     return (
@@ -149,6 +153,7 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
+                                        value={searchTerm===null?'':searchTerm}
                                         onChange={onChangeSearch}
                                         type='text'
                                         placeholder='Search...'>
@@ -174,15 +179,15 @@ export const Cards = () => {
                                                     <StyledTableCell>Question</StyledTableCell>
                                                     <StyledTableCell align="right">Answer</StyledTableCell>
                                                     <StyledTableCell align="right">Last Update
-                                                        {lastUpdateValue===0
+                                                        {lastUpdateValue === 0
                                                             ? <ArrowDownwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={()=>setLastUpdateValue(1)}/>
+                                                            }} onClick={() => setLastUpdateValue(1)}/>
                                                             : <ArrowUpwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={()=>setLastUpdateValue(0)}/>
+                                                            }} onClick={() => setLastUpdateValue(0)}/>
                                                         }
                                                     </StyledTableCell>
                                                     <StyledTableCell align="right">Grade</StyledTableCell>
