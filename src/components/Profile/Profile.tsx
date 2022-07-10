@@ -1,19 +1,20 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { Navigate } from "react-router";
 import { PATH } from "../Routes/Routes";
-import {logoutTC} from "../../Redux/LoginReducer";
+import { logoutTC } from "../../Redux/LoginReducer";
 import s from "./Profile.module.css"
 import user from './user.png'
 import SliderComponent from '../Slider/Slider';
 import PacksListTable from '../Table/Table';
+import { Button } from '@mui/material';
 
-export const Profile = () => {
-    const dispatch = useAppDispatch()
-    const profile = useAppSelector(state => state.login)
-    const isLoggedIn = profile.isLoggedIn
+export const Profile = React.memo(() => {
+    const dispatch = useAppDispatch();
+    const profile = useAppSelector(state => state.login);
+    const isLoggedIn = profile.isLoggedIn;
 
-        const logout = () => {
+    const logout = () => {
         dispatch(logoutTC())
     }
 
@@ -34,9 +35,9 @@ export const Profile = () => {
                 </div>
             </div>
             <div className={s.PacksListBlock}>
-                <div className={s.Sign}>Packs list Petr's</div>
-                <PacksListTable/>
+                <div className={s.Sign}>Packs list {profile.name}`s <Button style={{float: "right"}} onClick={logout} variant='contained' color='primary'>Logout</Button></div>
+                <PacksListTable />
             </div>
         </div>
     );
-};
+});

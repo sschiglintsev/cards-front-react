@@ -1,4 +1,4 @@
-import { setMessageAC } from "./AppReducer"
+import { setIsLoadingAC, setMessageAC } from "./AppReducer"
 import { AppThunk } from "./Store"
 import {accountAPI} from "../api/registration-api";
 
@@ -31,13 +31,16 @@ export type RegisterValuesType = {
 }
 
 export const registerUserTC = (values: RegisterValuesType): AppThunk => (dispatch) => {
+    dispatch(setIsLoadingAC(true));
     accountAPI.register(values)
     .then((result) => {
         if(!result.data.error) {
             dispatch(setIsRegisteredAC(true))
+            dispatch(setIsLoadingAC(false));
         } 
     })
     .catch((error) => {        
+        dispatch(setIsLoadingAC(false));
         dispatch(setMessageAC(error.response.data.error, true))
     })
 }

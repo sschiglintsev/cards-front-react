@@ -5,35 +5,50 @@ import { Button, Input, InputAdornment, Pagination } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
-import { getPacksTC, PackType } from '../../Redux/ProfileReducer';
-import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
+import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
-import {addNamePackAC} from "../../Redux/CardsReducer";
+import { addNamePackAC } from "../../Redux/CardsReducer";
 
 const PacksListTable = () => {
 
     const dispatch = useAppDispatch();
     let [page, setPage] = useState(0);
+
     let packs = useAppSelector(state => state.profile.packs);
     let totalCount = useAppSelector(state => state.profile.totalCount);
     let minMax = useAppSelector(state => state.profile.minMax);
+    let packName = useAppSelector(state => state.profile.packName);
+
     let pageCount = Math.ceil(totalCount / 8);
 
     useEffect(() => {
         dispatch(getPacksTC(page + 1))
-    }, [page, dispatch]);
+    }, [page, dispatch, minMax]);
 
     useEffect(() => {
         setPage(0);
-        dispatch(getPacksTC(page + 1));
     }, [minMax])
 
     let navigate = useNavigate();
 
     function onChangeHandler(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         console.log(event.target.value);
-
+        dispatch(SetPackNameAC(event.target.value));
     }
+
+    const debouncedSearchTerm = useDebounce(packName, 500);
+
+    useEffect(
+        () => {
+            if (debouncedSearchTerm) {
+                // setIsSearching(true);
+                console.log(debouncedSearchTerm)
+                dispatch(getPacksTC(page));
+            }
+        },
+        [debouncedSearchTerm]
+    );
 
     const columns: GridColDef[] = [
 
@@ -46,7 +61,7 @@ const PacksListTable = () => {
                     // @ts-ignore
                     dispatch(addNamePackAC(params.row.name))
                 }
-                return <div style={{cursor: "pointer"}} onClick={onClick}>{params.row.name}</div>
+                return <div style={{ cursor: "pointer" }} onClick={onClick}>{params.row.name}</div>
             }
         },
         { field: 'cards', headerName: 'Cards', width: 110 },
@@ -88,7 +103,7 @@ const PacksListTable = () => {
                 }
                 onChange={onChangeHandler}
             />
-            <div style={{ height: 537, width: '100%', paddingTop: 10 }}>
+            <div style={{ height: 535.5, width: '100%', paddingTop: 10 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
