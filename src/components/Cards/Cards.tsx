@@ -51,16 +51,14 @@ export const Cards = () => {
 
     //Search Param in url
     let [searchParams, setSearchParams] = useSearchParams();
-    // console.log(searchParams.get(`page`))
-    // console.log(Object.fromEntries(searchParams))
 
     let pageStr = searchParams.get('page')
     let valueSearchURLCardAnswer = searchParams.get('cardAnswer')
 
     //Search
-    const [searchTerm, setSearchTerm] = useState(valueSearchURLCardAnswer);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    // const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
     const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
@@ -69,12 +67,6 @@ export const Cards = () => {
         setSearchTerm(value)
     }
 
-    // useEffect(() => {
-    //     // url.append('cardAnswer', debouncedSearchTerm)
-    //     // navigate({pathname, search: url.toString()})
-    //     console.log(debouncedSearchTerm)
-    // }, [debouncedSearchTerm]);
-
     //setCards
 
     useEffect(() => {
@@ -82,21 +74,16 @@ export const Cards = () => {
         const page = pageStr === null ? 1 : parseInt(pageStr, 10)
 
         dispatch(setCardsTC({cardsPack_id, page, cardAnswer}))
-    }, [cardsPack_id, pageStr, valueSearchURLCardAnswer])
-
+    }, [cardsPack_id, pageStr, debouncedSearchTerm])
 
     //Pagination
 
     let navigate = useNavigate();
-    //const {pathname} = useLocation()
 
     const initPage = pageStr === null ? 1 : parseInt(pageStr, 10)
     const [pageValue, setPageValue] = useState(initPage);
-    //const url = new URLSearchParams();
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-        // url.append('page', String(value))
-        // navigate({pathname, search: url.toString()})
         setSearchParams({...Object.fromEntries(searchParams), page: String(value)})
         setPageValue(value);
     };
@@ -153,7 +140,7 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
-                                        value={searchTerm===null?'':searchTerm}
+                                        value={searchTerm === null ? '' : searchTerm}
                                         onChange={onChangeSearch}
                                         type='text'
                                         placeholder='Search...'>
