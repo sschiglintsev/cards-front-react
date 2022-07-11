@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../Redux/hooks';
 import { SetMinMaxAC } from '../../Redux/ProfileReducer';
 
 const SliderComponent = () => {
-    const [value, setValue] = useState<number[]>([1, 130]);
+    const [value, setValue] = useState<number[]>([0, 130]);
     let dispatch = useAppDispatch();
 
     const handleChange = (event: Event, newValue: number | number[]) => {
@@ -25,7 +25,7 @@ const SliderComponent = () => {
             <Slider
                 onChangeCommitted={handleMouseUp}
                 max={130}
-                min={1}
+                min={0}
                 getAriaLabel={() => 'Number of cards'}
                 value={value}
                 onChange={handleChange}

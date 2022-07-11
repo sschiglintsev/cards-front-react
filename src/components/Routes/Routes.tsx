@@ -11,6 +11,7 @@ import {Test} from "../Test/Test";
 import {CheckEmail} from '../CheckEmail/CheckEmail';
 import {Cards} from "../Cards/Cards";
 import {EditCardInfo} from "../EditCardInfo/EditCardInfo";
+import { PacksList } from '../PacksList/PacksList';
 
 export const PATH = {
     MAIN: '/main',
@@ -47,6 +48,7 @@ export const RoutesPage = () => {
                 <Route path={PATH.ERROR} element={<Error404/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
+                <Route path={PATH.PACKS_LIST} element={<PacksList/>}/>
                 <Route path="*" element={<Navigate to="/error404"/>}/>
                 <Route path={PATH.PROFILE_CARD}>
                     <Route path=":cardsPack_id" element={<Cards/>}/>
