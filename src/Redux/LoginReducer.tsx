@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {LoginApi, LoginParamsType} from "../api/login-api";
-import {setMessageAC} from "./AppReducer";
+import {setIsLoadingAC, setMessageAC} from "./AppReducer";
 import {AppThunk} from "./Store";
 
 type InitialStateLoginType = {
@@ -89,13 +89,17 @@ export const loginTC = (data: LoginParamsType): AppThunk => (dispatch: Dispatch)
 export const AuthMeTC = (): AppThunk => async (dispatch: Dispatch) => {
 
     try {
+        dispatch(setIsLoadingAC(true))
         const response = await LoginApi.authMe()
         dispatch(setIsLoggedInAC(true))
         dispatch(setProfileAC(response.data._id, response.data.name, response.data.email, response.data.publicCardPacksCount, response.data.avatar))
+
+
     } catch (error: any) {
         dispatch(setMessageAC(error.message, true))
         console.log(error.message)
     } finally {
+        dispatch(setIsLoadingAC(false))
         dispatch(setIsInitializeAC())
     }
 }

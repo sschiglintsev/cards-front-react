@@ -5,13 +5,17 @@ import { Button, Input, InputAdornment, Pagination } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
-import { GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
+import { addPackTC, GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
 import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
 import { PATH } from '../Routes/Routes';
 
-const PacksListTable = () => {
+type PacksTablePropsType = {
+    packsList?: boolean
+}
+
+const PacksListTable = React.memo((props: PacksTablePropsType) => {
 
     const dispatch = useAppDispatch();
     let [page, setPage] = useState(0);
@@ -22,6 +26,7 @@ const PacksListTable = () => {
     let packName = useAppSelector(state => state.profile.packName);
 
     let pageCount = Math.ceil(totalCount / 8);
+    let userId = useAppSelector(state => state.login._id);
 
     useEffect(() => {
         dispatch(getPacksTC(page + 1))
@@ -51,8 +56,64 @@ const PacksListTable = () => {
         [debouncedSearchTerm]
     );
 
-    const columns: GridColDef[] = [
+    function onAddClickHandler() {
+        //thunk
+        dispatch(addPackTC("New pack"));
+    }
+    
+    let actions = props.packsList ? {
+        field: 'actions',
+        headerName: 'Actions',
 
+        description: 'This column has a value getter and is not sortable.',
+        sortable: false,
+        width: 150,
+        renderCell: (params: any) => {
+            console.log(params.id);
+            if (params.id === userId) {
+                const onLearnClick = (e: MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    //*navigate();
+                }
+                const onDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    //*navigate();
+                }
+                const onEditClick = (e: MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    //*navigate();
+                }
+                return <>
+                    <Button onClick={onDeleteClick} color="error" size='small'>Delete</Button>
+                    <Button onClick={onEditClick} size='small'>Edit</Button>
+                    <Button onClick={onLearnClick} size='small'>Learn</Button>
+                </>
+            } else {
+                const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    //*navigate();
+                }
+                return <Button onClick={onClick}>Learn</Button>
+            }
+            
+        }
+    } : {
+        field: 'actions',
+        headerName: 'Actions',
+
+        description: 'This column has a value getter and is not sortable.',
+        sortable: false,
+        width: 80,
+        renderCell: (params: any) => {
+            const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+                e.stopPropagation();
+                //*navigate();
+            }
+            return <Button onClick={onClick}>Learn</Button>
+        }
+    }
+
+    const columns: GridColDef[] = [
         {
             field: 'name', headerName: 'Name', width: 210,
             renderCell: (params) => {
@@ -76,18 +137,18 @@ const PacksListTable = () => {
         {
             field: 'actions',
             headerName: 'Actions',
-
+    
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
             width: 80,
-            renderCell: (params) => {
+            renderCell: (params: any) => {
                 const onClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     navigate(`/profile/card/${params.id}`);
                 }
                 return <Button onClick={onClick}>Learn</Button>
             }
-        },
+        }
     ];
 
     const rows = packs.map((p: PackType) => ({ id: p._id, name: p.name, cards: p.cardsCount, lastUpdated: p.updated, createdBy: p.user_name, actions: "" }));
@@ -95,7 +156,7 @@ const PacksListTable = () => {
     return (
         <div className={s.Table}>
             <Input
-                fullWidth
+                sx={{ width: props.packsList ? "510px" : "100%", marginRight: "10px" }}
                 id="input-with-icon-adornment"
                 startAdornment={
                     <InputAdornment position="start">
@@ -104,6 +165,7 @@ const PacksListTable = () => {
                 }
                 onChange={onChangeHandler}
             />
+            {props.packsList && <Button variant='contained' color='primary' sx={{ borderRadius: "30px" }} onClick={onAddClickHandler}>Add new pack</Button>}
             <div style={{ height: 535.5, width: '100%', paddingTop: 10 }}>
                 <DataGrid
                     rows={rows}
@@ -120,7 +182,7 @@ const PacksListTable = () => {
             </div>
         </div>
     )
-}
+});
 
 type PaginationPropsType = {
     count: number,

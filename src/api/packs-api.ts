@@ -12,8 +12,30 @@ export const packsAPI = {
                 user_id: payload.user_id,
             }
         });
+    },
+    addPack(newPack: CardsPackType) {
+        // @ts-ignore
+        return instance.post('cards/pack', {cardsPack: {...newPack}})
+    },
+    deletePack(id: string) {
+        return instance.delete(`cards/pack?id=${id}`)
+    },
+    updatePack(cardsPack: UpdatePackType) {
+        return instance.put('cards/packs', cardsPack)
     }
 }
+
+type CardsPackType = {
+    name?: string
+    deckCover?: string 
+    private: boolean
+}
+
+type UpdatePackType = {
+    _id: string
+    name: string
+}
+
 
 type PacksRequestType = {
     packName?: string // не обязательно 
