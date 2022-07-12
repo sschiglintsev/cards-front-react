@@ -38,16 +38,16 @@ const initialState: InitialStateType = {
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
     switch (action.type) {
         case 'PROFILE/Get-Packs': {
-            return { ...state, packs: action.packs, totalCount: action.totalCount}
+            return { ...state, packs: action.packs, totalCount: action.totalCount }
         }
         case 'PROFILE/Set-MinMax': {
             console.log(action.value);
-            
-            return {...state, minMax: action.value}
+
+            return { ...state, minMax: action.value }
         }
         case 'PROFILE/Set-PackName': {
-            
-            return {...state, packName: action.packName}
+
+            return { ...state, packName: action.packName }
         }
         default:
             return { ...state }
@@ -55,19 +55,19 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
 }
 
 
-export const getPacksTC = (page: number): AppThunk => async (dispatch, getState) => {
+export const getPacksTC = (page: number, myPacks?: boolean): AppThunk => async (dispatch, getState) => {
     dispatch(setIsLoadingAC(true));
     try {
         let state = getState();
         let data = {
-        packName: state.profile.packName, 
-        min: state.profile.minMax[0], 
-        max: state.profile.minMax[1], 
-        sortPacks: "",
-        page: page,
-        pageCount: 8,
-        user_id: state.login._id,
-    }
+            packName: state.profile.packName,
+            min: state.profile.minMax[0],
+            max: state.profile.minMax[1] !== 0 ? state.profile.minMax[1] : 130,
+            sortPacks: "",
+            page: page,
+            pageCount: 8,
+            user_id: myPacks ? state.login._id : "",
+        }
         let result = await packsAPI.getPacks(data);
         console.log(result.data.cardPacks);
         dispatch(GetPacksAC(result.data.cardPacks, result.data.cardPacksTotalCount));
@@ -77,6 +77,25 @@ export const getPacksTC = (page: number): AppThunk => async (dispatch, getState)
         dispatch(setMessageAC(error.response.data.error, true));
     }
 
+}
+
+export const addPackTC = (name: string = "New name", isPrivate: boolean = false): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true));
+    try {
+        let cardsPack = {
+            name,
+            deckCover: "",
+            private: isPrivate
+        }
+        let result = await packsAPI.addPack(cardsPack);
+        console.log(result);
+        
+        dispatch(getPacksTC(0, true));
+        dispatch(setIsLoadingAC(false));
+    } catch (error: any) {
+        dispatch(setIsLoadingAC(false));
+        dispatch(setMessageAC(error.response.data.error, true));
+    }
 }
 
 export const GetPacksAC = (packs: PackType[], totalCount: number) => ({ type: 'PROFILE/Get-Packs', packs, totalCount } as const)
