@@ -9,7 +9,7 @@ export const packsAPI = {
                 min: payload.min, // не обязательно 
                 max: payload.max, // не обязательно 
                 sortPacks: payload.sortPacks,// не обязательно 
-                //user_id: payload.user_id,
+                user_id: payload.user_id,
             }
         });
     }

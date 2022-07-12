@@ -7,8 +7,9 @@ import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
 import { GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
 import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
+import { PATH } from '../Routes/Routes';
 
 const PacksListTable = () => {
 
@@ -82,7 +83,7 @@ const PacksListTable = () => {
             renderCell: (params) => {
                 const onClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
-                    //*navigate();
+                    navigate(`/profile/card/${params.id}`);
                 }
                 return <Button onClick={onClick}>Learn</Button>
             }
