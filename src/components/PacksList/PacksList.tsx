@@ -8,23 +8,22 @@ import SliderComponent from '../Slider/Slider';
 import PacksListTable from '../Table/Table';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { getPacksTC } from '../../Redux/ProfileReducer';
+import { getPacksTC, SetIsMyActiveAC } from '../../Redux/ProfileReducer';
 
 export const PacksList = React.memo(() => {
 
     const dispatch = useAppDispatch();
     const profile = useAppSelector(state => state.login);
+    const isMyActive = useAppSelector(state => state.profile.isMyActive);
     const isLoggedIn = profile.isLoggedIn;
 
-    const [isMyActive, setIsMyActive] = useState(false);
-
     function onMyClickHandler() {
-        setIsMyActive(true);
-        dispatch(getPacksTC(0, true));
+        dispatch(SetIsMyActiveAC(true))
+        dispatch(getPacksTC(0));
     }
     function onAllClickHandler() {
-        setIsMyActive(false);
-        dispatch(getPacksTC(0, false));
+        dispatch(SetIsMyActiveAC(false))
+        dispatch(getPacksTC(0));
     }
 
     if (!isLoggedIn) {
@@ -48,7 +47,7 @@ export const PacksList = React.memo(() => {
             </div>
             <div className={s.PacksListBlock}>
                 <div className={s.Sign}>Packs list</div>
-                <PacksListTable packsList/>
+                <PacksListTable/>
             </div>
         </div>
     );
