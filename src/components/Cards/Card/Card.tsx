@@ -9,7 +9,6 @@ import { useAppDispatch } from '../../../Redux/hooks';
 import { changeCardEditStatus } from '../../../Redux/CardsReducer';
 import { useDispatch } from 'react-redux';
 import { CardsApi } from '../../../api/cards-api';
-import { SuperCardInput } from '../../common/SuperCardInput/SuperCardInput';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -51,7 +50,7 @@ type PropsType = {
 
 export const Card: FC<PropsType> = ({card, deleteCard}) => {
     const dispatch = useDispatch();
-    const {question, answer, updated, grade,_id, isEditCard } = card;
+    const {question, answer, updated, grade,_id } = card;
 
     const [questionValue, setQuestionValue] = useState<string>(question);
     const [answerValue, setAnswerValue] = useState<string>(answer);
@@ -65,21 +64,14 @@ export const Card: FC<PropsType> = ({card, deleteCard}) => {
     }
 
     const editButton = () => {
-        if (isEditCard) {
-            CardsApi.editCard({
-                _id: _id,
-                question: questionValue,
-                answer: answerValue,
-            }).then(res => console.log(res.data))
-        }
-        dispatch(changeCardEditStatus(_id))
+        
     }
     return (
         <StyledTableRow key={question}>
-            {/* {!isEditCard ? <StyledTableCell component="th" scope="row">{question}</StyledTableCell> : <input type='text'></input>} */}
-            <SuperCardInput isEditCard={isEditCard} text={questionValue} onChangeEvent={onChangeQuestion}/>
-            <SuperCardInput isEditCard={isEditCard} text={answerValue} onChangeEvent={onChangeAnswer}/>
-            {/* <StyledTableCell align="right">{answer}</StyledTableCell> */}
+            <StyledTableCell component="th" scope="row">{question}</StyledTableCell>
+            {/* <SuperCardInput text={questionValue} />
+            <SuperCardInput text={answerValue} /> */}
+            <StyledTableCell align="right">{answer}</StyledTableCell>
             <StyledTableCell align="right">{updated.slice(0, 10)}</StyledTableCell>
             <StyledTableCell align="right">{grade}</StyledTableCell>
             <StyledTableCell align="right">
@@ -102,7 +94,7 @@ export const Card: FC<PropsType> = ({card, deleteCard}) => {
                                 width: 30,
                                 height: 25,
                             }}>
-                        {isEditCard ? 'Save' : 'Edit'}
+                        Edit
                     </Button>
                 </div>
             </StyledTableCell>

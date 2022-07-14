@@ -1,0 +1,35 @@
+.modalWrapper {
+    background: #F9F9FE;
+    width: 395px;
+    height: 233px;
+    padding: 0 24px;
+    padding-top: 15px;
+    position: absolute;
+    top: 22%;
+    left: 20%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.closeButton {
+    cursor: pointer;
+    background: #F9F9FE;
+}
+
+.title {
+    width: 130px;
+    height: 27px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2D2E46;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}

@@ -10,6 +10,7 @@ import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
 import { PATH } from '../Routes/Routes';
+import { AddNewPack } from '../AddNewPack/AddNewPack';
 
 type PacksTablePropsType = {
     packsList?: boolean
@@ -19,6 +20,7 @@ const PacksListTable = React.memo((props: PacksTablePropsType) => {
 
     const dispatch = useAppDispatch();
     let [page, setPage] = useState(0);
+    const [addPackStatus, setAddPackStatus] = useState(false);
 
     let packs = useAppSelector(state => state.profile.packs);
     let totalCount = useAppSelector(state => state.profile.totalCount);
@@ -58,7 +60,8 @@ const PacksListTable = React.memo((props: PacksTablePropsType) => {
 
     function onAddClickHandler() {
         //thunk
-        dispatch(addPackTC("New pack"));
+        setAddPackStatus(!addPackStatus);
+        // dispatch(addPackTC("New pack"));
     }
     
     let actions = props.packsList ? {
@@ -180,6 +183,7 @@ const PacksListTable = React.memo((props: PacksTablePropsType) => {
                     }}
                 />
             </div>
+            {addPackStatus && <AddNewPack changeAddPackStatus={onAddClickHandler} />}
         </div>
     )
 });

@@ -28,7 +28,7 @@ export const packsAPI = {
 type CardsPackType = {
     name?: string
     deckCover?: string 
-    private: boolean
+    private?: boolean
 }
 
 type UpdatePackType = {

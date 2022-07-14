@@ -12,6 +12,7 @@ import {CheckEmail} from '../CheckEmail/CheckEmail';
 import {Cards} from "../Cards/Cards";
 import {EditCardInfo} from "../EditCardInfo/EditCardInfo";
 import { PacksList } from '../PacksList/PacksList';
+import { AddNewPack } from '../AddNewPack/AddNewPack';
 
 export const PATH = {
     MAIN: '/main',
@@ -26,7 +27,7 @@ export const PATH = {
     CARD: '/cards/card',
     ADD_NEW_CARD: '/cards/card/create-card',
     PACKS_LIST: '/packs-list',
-    PROFILE_CARD: '/profile/card'
+    PROFILE_CARD: '/profile/card',
 }
 
 export const RoutesPage = () => {
