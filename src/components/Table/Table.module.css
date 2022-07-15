@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+.DeleteButton {
+    width: 48px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: #f1453d;
+    color: #fff;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.Button {
+    width: 43px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: #D7D8EF;
+    color: #21268F;
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    margin-left: 10px;
+}

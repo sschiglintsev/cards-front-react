@@ -6,7 +6,7 @@ import { logoutTC } from "../../Redux/LoginReducer";
 import s from "./Profile.module.css"
 import user from './user.png'
 import SliderComponent from '../Slider/Slider';
-import PacksListTable from '../Table/Table';
+import PacksListTable, { ProfileTable } from '../Table/Table';
 import { Button } from '@mui/material';
 
 export const Profile = React.memo(() => {
@@ -36,7 +36,7 @@ export const Profile = React.memo(() => {
             </div>
             <div className={s.PacksListBlock}>
                 <div className={s.Sign}>Packs list {profile.name}`s <Button style={{float: "right"}} onClick={logout} variant='contained' color='primary'>Logout</Button></div>
-                <PacksListTable />
+                <ProfileTable />
             </div>
         </div>
     );

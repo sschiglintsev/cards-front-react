@@ -2,6 +2,7 @@ import { AppThunk } from "./Store"
 import { packsAPI } from './../api/packs-api';
 import { number } from "yup";
 import { setIsLoadingAC, setMessageAC } from "./AppReducer";
+import { boolean } from "yup/lib/locale";
 
 export type PackType = {
     cardsCount: number
@@ -26,13 +27,15 @@ export type InitialStateType = {
     minMax: number[]
     totalCount: number
     packName: string
+    isMyActive: boolean
 }
 
 const initialState: InitialStateType = {
     packs: [],
-    minMax: [1, 130],
+    minMax: [0, 130],
     totalCount: 1,
-    packName: ""
+    packName: "", 
+    isMyActive: false
 }
 
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
@@ -49,13 +52,17 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
 
             return { ...state, packName: action.packName }
         }
+        case 'PROFILE/Set-Is-My-Active': {
+
+            return { ...state, isMyActive: action.isActive }
+        }
         default:
             return { ...state }
     }
 }
 
 
-export const getPacksTC = (page: number, myPacks?: boolean): AppThunk => async (dispatch, getState) => {
+export const getPacksTC = (page: number): AppThunk => async (dispatch, getState) => {
     dispatch(setIsLoadingAC(true));
     try {
         let state = getState();
@@ -66,7 +73,7 @@ export const getPacksTC = (page: number, myPacks?: boolean): AppThunk => async (
             sortPacks: "",
             page: page,
             pageCount: 8,
-            user_id: myPacks ? state.login._id : "",
+            user_id: state.profile.isMyActive ? state.login._id : "",
         }
         let result = await packsAPI.getPacks(data);
         console.log(result.data.cardPacks);
@@ -87,10 +94,32 @@ export const addPackTC = (name: string = "New name", isPrivate: boolean = false)
             deckCover: "",
             private: isPrivate
         }
-        let result = await packsAPI.addPack(cardsPack);
-        console.log(result);
-        
-        dispatch(getPacksTC(0, true));
+        let result = await packsAPI.addPack(cardsPack);        
+        dispatch(getPacksTC(0));
+        dispatch(setIsLoadingAC(false));
+    } catch (error: any) {
+        dispatch(setIsLoadingAC(false));
+        dispatch(setMessageAC(error.response.data.error, true));
+    }
+}
+
+export const deletePackTC = (id: string): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true));
+    try {
+        let result = await packsAPI.deletePack(id);
+        dispatch(getPacksTC(0));
+        dispatch(setIsLoadingAC(false));
+    } catch (error: any) {
+        dispatch(setIsLoadingAC(false));
+        dispatch(setMessageAC(error.response.data.error, true));
+    }
+}
+
+export const editPackTC = (_id: string, name: string): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true));
+    try {
+        let result = await packsAPI.updatePack({_id, name});
+        dispatch(getPacksTC(0));
         dispatch(setIsLoadingAC(false));
     } catch (error: any) {
         dispatch(setIsLoadingAC(false));
@@ -111,7 +140,11 @@ export const SetPackNameAC = (packName: string) => ({ type: 'PROFILE/Set-PackNam
 
 
 export type SetPackNameActionType = ReturnType<typeof SetPackNameAC>
+export const SetIsMyActiveAC = (isActive: boolean) => ({ type: 'PROFILE/Set-Is-My-Active', isActive} as const)
+
+
+export type SetIsMyActiveActionType = ReturnType<typeof SetIsMyActiveAC>
 
 
 export type ProfileActionsType =
-    GetPacksActionType | SetMinMaxActionType | SetPackNameActionType;
+    GetPacksActionType | SetMinMaxActionType | SetPackNameActionType | SetIsMyActiveActionType;
