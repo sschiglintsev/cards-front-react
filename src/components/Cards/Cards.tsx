@@ -54,27 +54,41 @@ export const Cards = () => {
 
     let pageStr = searchParams.get('page')
     let valueSearchURLCardAnswer = searchParams.get('cardAnswer')
+    let valueSearchURLCardQuestion = searchParams.get('cardQuestion')
 
     //Search
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTermAnswer, setSearchTermAnswer] = useState('');
+    const [searchTermQuestion, setSearchTermQuestion] = useState('');
 
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const debouncedSearchTermAnswer = useDebounce(searchTermAnswer, 500);
+    const debouncedSearchTermQuestion = useDebounce(searchTermQuestion, 500);
 
-    const onChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeSearchAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
         setSearchParams({...Object.fromEntries(searchParams), cardAnswer: value})
         setPageValue(1)
-        setSearchTerm(value)
+        setSearchTermAnswer(value)
     }
+
+    const onChangeSearchQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value
+        setSearchParams({...Object.fromEntries(searchParams), cardQuestion: value})
+        setPageValue(1)
+        setSearchTermQuestion(value)
+    }
+
+    //Sort last update
+    const [sortCards, setSortCards] = useState('0')
 
     //setCards
 
     useEffect(() => {
+        const cardQuestion = valueSearchURLCardQuestion == null ? '' : valueSearchURLCardQuestion
         const cardAnswer = valueSearchURLCardAnswer == null ? '' : valueSearchURLCardAnswer
         const page = pageStr === null ? 1 : parseInt(pageStr, 10)
 
-        dispatch(setCardsTC({cardsPack_id, page, cardAnswer}))
-    }, [cardsPack_id, pageStr, debouncedSearchTerm])
+        dispatch(setCardsTC({cardsPack_id, page, cardAnswer, cardQuestion, sortCards}))
+    }, [cardsPack_id, pageStr, debouncedSearchTermAnswer,debouncedSearchTermQuestion, sortCards])
 
     //Pagination
 
@@ -103,8 +117,7 @@ export const Cards = () => {
         dispatch(clearCardsTC())
     }
 
-    //Sort last update
-    const [lastUpdateValue, setLastUpdateValue] = useState(0)
+
 
     if (!isLoggedIn) {
         return <Navigate to={PATH.LOGIN}/>
@@ -140,10 +153,17 @@ export const Cards = () => {
                                 >
                                     <input
                                         className={style.searchInput}
-                                        value={searchTerm === null ? '' : searchTerm}
-                                        onChange={onChangeSearch}
+                                        value={searchTermQuestion === null ? '' : searchTermQuestion}
+                                        onChange={onChangeSearchQuestion}
                                         type='text'
-                                        placeholder='Search...'>
+                                        placeholder='Search question...'>
+                                    </input>
+                                    <input
+                                        className={style.searchInput}
+                                        value={searchTermAnswer === null ? '' : searchTermAnswer}
+                                        onChange={onChangeSearchAnswer}
+                                        type='text'
+                                        placeholder='Search answer...'>
                                     </input>
                                     <NavLink to={`${PATH.ADD_NEW_CARD}/${cardsPack_id}`} className={style.link}>
                                         <Button
@@ -170,11 +190,11 @@ export const Cards = () => {
                                                             ? <ArrowDownwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={() => setLastUpdateValue(1)}/>
+                                                            }} onClick={() => setSortCards('1')}/>
                                                             : <ArrowUpwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={() => setLastUpdateValue(0)}/>
+                                                            }} onClick={() => setSortCards('0')}/>
                                                         }
                                                     </StyledTableCell>
                                                     <StyledTableCell align="right">Grade</StyledTableCell>
