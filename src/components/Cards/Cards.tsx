@@ -19,7 +19,7 @@ import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
 import {useParams, useNavigate, NavLink, useSearchParams, useLocation, Navigate} from 'react-router-dom';
 import useDebounce, {useAppDispatch, useAppSelector} from "../../Redux/hooks";
-import {clearCardsTC, setCardsTC} from "../../Redux/CardsReducer";
+import {clearCardsTC, deleteCardTC, setCardsTC} from "../../Redux/CardsReducer";
 import {PATH} from "../Routes/Routes";
 import {Card} from "./Card/Card";
 import {CardsApi} from "../../api/cards-api";
@@ -46,6 +46,7 @@ export const Cards = () => {
     const rows = cards.cards
     const pageCount = cards.pageCount
     const cardsTotalCount = cards.cardsTotalCount
+    const [isDeleteCard, setIsDeleteCard] = useState(false)
 
     const {cardsPack_id} = useParams();
 
@@ -89,7 +90,7 @@ export const Cards = () => {
         const sortCards =sortCardsUpdated  + 'updated'
 
         dispatch(setCardsTC({cardsPack_id, page, cardAnswer, cardQuestion, sortCards}))
-    }, [cardsPack_id, pageStr, debouncedSearchTermAnswer,debouncedSearchTermQuestion, sortCardsUpdated])
+    }, [cardsPack_id, pageStr, debouncedSearchTermAnswer,debouncedSearchTermQuestion, sortCardsUpdated,isDeleteCard])
 
     //Pagination
 
@@ -105,7 +106,8 @@ export const Cards = () => {
 
     // Buttons func
     const deleteCard = (id: string) => {
-        CardsApi.deleteCard(id);
+        dispatch(deleteCardTC(id))
+        setIsDeleteCard(!isDeleteCard)
     }
 
     const editButton = (id: string) => {
@@ -115,10 +117,7 @@ export const Cards = () => {
     // Back in Paks list
     const backInPacks = () => {
         navigate(`/profile`)
-        dispatch(clearCardsTC())
     }
-
-
 
     if (!isLoggedIn) {
         return <Navigate to={PATH.LOGIN}/>

@@ -65,7 +65,7 @@ export const CardsApi = {
     },
 
     createCard(data: NewCardType) {
-        return instance.post('/cards/card', data);
+        return instance.post('/cards/card', {card:data});
     },
 
     editCard(data: any) {

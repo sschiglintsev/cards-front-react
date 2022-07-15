@@ -1,15 +1,14 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import style from "./Card.module.css";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import { useAppDispatch } from '../../../Redux/hooks';
-import { changeCardEditStatus } from '../../../Redux/CardsReducer';
-import { useDispatch } from 'react-redux';
-import { CardsApi } from '../../../api/cards-api';
-import { SuperCardInput } from '../../common/SuperCardInput/SuperCardInput';
+import {changeCardEditStatus} from '../../../Redux/CardsReducer';
+import {useDispatch} from 'react-redux';
+import {CardsApi} from '../../../api/cards-api';
+import {SuperCardInput} from '../../common/SuperCardInput/SuperCardInput';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -51,7 +50,7 @@ type PropsType = {
 
 export const Card: FC<PropsType> = ({card, deleteCard}) => {
     const dispatch = useDispatch();
-    const {question, answer, updated, grade,_id, isEditCard } = card;
+    const {question, answer, updated, grade, _id, isEditCard} = card;
 
     const [questionValue, setQuestionValue] = useState<string>(question);
     const [answerValue, setAnswerValue] = useState<string>(answer);

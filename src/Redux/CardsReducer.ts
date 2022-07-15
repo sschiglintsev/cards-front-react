@@ -110,3 +110,12 @@ export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispat
 export const clearCardsTC = (): AppThunk => (dispatch: Dispatch) => {
     dispatch(clearCardsAC())
 }
+
+export const deleteCardTC = (id:string):AppThunk =>async (dispatch:Dispatch) => {
+    try {
+        await CardsApi.deleteCard(id);
+    } catch (e) {
+
+    }
+
+}
