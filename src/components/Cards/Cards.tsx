@@ -78,7 +78,7 @@ export const Cards = () => {
     }
 
     //Sort last update
-    const [sortCards, setSortCards] = useState('0')
+    const [sortCardsUpdated, setSortCardsUpdated] = useState('0')
 
     //setCards
 
@@ -86,9 +86,10 @@ export const Cards = () => {
         const cardQuestion = valueSearchURLCardQuestion == null ? '' : valueSearchURLCardQuestion
         const cardAnswer = valueSearchURLCardAnswer == null ? '' : valueSearchURLCardAnswer
         const page = pageStr === null ? 1 : parseInt(pageStr, 10)
+        const sortCards =sortCardsUpdated  + 'updated'
 
         dispatch(setCardsTC({cardsPack_id, page, cardAnswer, cardQuestion, sortCards}))
-    }, [cardsPack_id, pageStr, debouncedSearchTermAnswer,debouncedSearchTermQuestion, sortCards])
+    }, [cardsPack_id, pageStr, debouncedSearchTermAnswer,debouncedSearchTermQuestion, sortCardsUpdated])
 
     //Pagination
 
@@ -186,15 +187,15 @@ export const Cards = () => {
                                                     <StyledTableCell>Question</StyledTableCell>
                                                     <StyledTableCell align="right">Answer</StyledTableCell>
                                                     <StyledTableCell align="right">Last Update
-                                                        {sortCards === '0'
+                                                        {sortCardsUpdated === '0'
                                                             ? <ArrowDownwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={() => setSortCards('1')}/>
+                                                            }} onClick={() => setSortCardsUpdated('1')}/>
                                                             : <ArrowUpwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
-                                                            }} onClick={() => setSortCards('0')}/>
+                                                            }} onClick={() => setSortCardsUpdated('0')}/>
                                                         }
                                                     </StyledTableCell>
                                                     <StyledTableCell align="right">Grade</StyledTableCell>
