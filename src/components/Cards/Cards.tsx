@@ -105,8 +105,8 @@ export const Cards = () => {
     };
 
     // Buttons func
-    const deleteCard = (id: string) => {
-        dispatch(deleteCardTC(id))
+    async function deleteCard (id: string)  {
+        await dispatch(deleteCardTC(id))
         setIsDeleteCard(!isDeleteCard)
     }
 
