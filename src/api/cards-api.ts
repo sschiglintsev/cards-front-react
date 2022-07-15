@@ -57,7 +57,7 @@ type ResponseType = {
 
 export const CardsApi = {
     getCards(data: CardsParamsType) {
-        return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id + '&page=' + data.page + '&cardAnswer=' +data.cardAnswer + '&cardQuestion=' +data.cardQuestion);
+        return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id + '&page=' + data.page + '&cardAnswer=' +data.cardAnswer + '&cardQuestion=' +data.cardQuestion + '&sortCards=' +data.sortCards);
     },
 
     deleteCard(id: string) {
