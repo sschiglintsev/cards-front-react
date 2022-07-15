@@ -5,36 +5,48 @@ import {setIsLoadingAC} from "./AppReducer";
 
 export type InitialStateType = {
     cards: cardType[],
-    page:number,
-    pageCount:number,
-    cardsTotalCount:number,
+    page: number,
+    pageCount: number,
+    cardsTotalCount: number,
     namePack: string
 }
 
 const initialState: InitialStateType = {
-    cards:[],
-    page:0,
-    pageCount:0,
-    cardsTotalCount:0,
+    cards: [],
+    page: 0,
+    pageCount: 0,
+    cardsTotalCount: 0,
     namePack: ''
 }
 
 export const CardsReduser = (state: InitialStateType = initialState, action: CardsActionSType): InitialStateType => {
     switch (action.type) {
         case "cards/ADD-CARDS":
-            return {...state, cards:action.payload.data, page:action.payload.page, pageCount:action.payload.pageCount, cardsTotalCount:action.payload.cardsTotalCount}
+            return {
+                ...state,
+                cards: action.payload.data,
+                page: action.payload.page,
+                pageCount: action.payload.pageCount,
+                cardsTotalCount: action.payload.cardsTotalCount
+            }
         case "cards/CHANGE-CARD-EDIT-STATUS":
-            return {...state, cards: state.cards.map((card): cardType => card._id === action.cardId ? {...card, isEditCard: !card.isEditCard} : card)}
+            return {
+                ...state,
+                cards: state.cards.map((card): cardType => card._id === action.cardId ? {
+                    ...card,
+                    isEditCard: !card.isEditCard
+                } : card)
+            }
         case "cards/CLEAR-CARDS":
-            return {...state, cards: [], namePack: '', pageCount:0, page:0}
+            return {...state, cards: [], namePack: '', pageCount: 0, page: 0}
         case "cards/ADD-NAME-PACK":
             return {...state, namePack: action.payload.name}
-            default:
+        default:
             return {...state}
     }
 }
 
-export const setCardsAC = (data:cardType[],page:number, pageCount:number,cardsTotalCount:number ) =>
+export const setCardsAC = (data: cardType[], page: number, pageCount: number, cardsTotalCount: number) =>
     ({
         type: 'cards/ADD-CARDS',
         payload: {
@@ -70,12 +82,17 @@ type addNamePackACType = ReturnType<typeof addNamePackAC>
 
 type clearCardsACType = ReturnType<typeof clearCardsAC>
 
+
 type changeCardEditStatusType = {
     type: 'cards/CHANGE-CARD-EDIT-STATUS',
     cardId: string
 }
 
-type CardsActionSType = setCardsAСType | changeCardEditStatusType | addNamePackACType | clearCardsACType
+type CardsActionSType =
+    setCardsAСType
+    | changeCardEditStatusType
+    | addNamePackACType
+    | clearCardsACType
 
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
     dispatch(setIsLoadingAC(true))
@@ -85,7 +102,7 @@ export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispat
         })
         .catch(() => {
         })
-        .finally(()=>{
+        .finally(() => {
             dispatch(setIsLoadingAC(false))
         })
 }
