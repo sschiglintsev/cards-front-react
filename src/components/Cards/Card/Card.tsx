@@ -7,6 +7,7 @@ import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
 import {BasicModal} from "../../common/Modal/Modal";
 import Rating from "@mui/material/Rating";
+import {useAppSelector} from "../../../Redux/hooks";
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -46,6 +47,8 @@ type PropsType = {
 export const Card: FC<PropsType> = ({card, deleteCard}) => {
     const {question, answer, updated, grade, _id, isEditCard} = card;
 
+    const isMyActive = useAppSelector(state => state.profile.isMyActive)
+
     return (
         <>
             <StyledTableRow key={question}>
@@ -55,20 +58,23 @@ export const Card: FC<PropsType> = ({card, deleteCard}) => {
                 <StyledTableCell align="right">
                     <Rating name="read-only" value={grade} readOnly />
                 </StyledTableCell>
-                <StyledTableCell align="right">
-                    <div className={style_.buttons}>
-                        <Button onClick={() => deleteCard(_id)}
-                                variant="outlined"
-                                color="error"
-                                sx={{
-                                    width: 30,
-                                    height: 25,
-                                }}>
-                            Delete
-                        </Button>
-                        <BasicModal question={question} answer={answer} _id={_id}/>
-                    </div>
-                </StyledTableCell>
+                {isMyActive
+                    ?<StyledTableCell align="right">
+                        <div className={style_.buttons}>
+                            <Button onClick={() => deleteCard(_id)}
+                                    variant="outlined"
+                                    color="error"
+                                    sx={{
+                                        width: 30,
+                                        height: 25,
+                                    }}>
+                                Delete
+                            </Button>
+                            <BasicModal question={question} answer={answer} _id={_id}/>
+                        </div>
+                    </StyledTableCell>
+                :<></>}
+
             </StyledTableRow>
         </>
     );
