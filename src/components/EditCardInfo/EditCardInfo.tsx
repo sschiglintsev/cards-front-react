@@ -46,54 +46,54 @@ export const EditCardInfo = React.memo(() => {
     return (
         <div>
             <div className={style.wrapper}>
-                <h1 className={style.title}>Card info</h1>
-                <FormControl sx={{m: 0, width: '347px'}} variant="outlined">
-                    <InputLabel sx={{marginLeft: '-14px'}} htmlFor="outlined-adornment-password">Question</InputLabel>
-                    <Input
-                        id="outlined-adornment-password"
-                        type='text'
-                        value={question}
-                        onChange={onChangeQuestion}
-                    />
+            <h1 className={style.title}>Card info</h1>
+            <FormControl sx={{m: 0, width: '347px'}} variant="outlined">
+                <InputLabel sx={{marginLeft: '-14px'}} htmlFor="outlined-adornment-password">Question</InputLabel>
+                <Input
+                    id="outlined-adornment-password"
+                    type='text'
+                    value={question}
+                    onChange={onChangeQuestion}
+                />
 
-                    <label htmlFor="button-file">
-                        + Attach file
-                        <input className={style.containedButtonFile} id='button-file' type='file'></input>
-                    </label>
-                </FormControl>
+                <label htmlFor="button-file">
+                    + Attach file
+                    <input className={style.containedButtonFile} id='button-file' type='file'></input>
+                </label>
+            </FormControl>
 
-                <FormControl sx={{m: 0, width: '347px'}} variant="outlined">
-                    <InputLabel sx={{marginLeft: '-14px'}} htmlFor="outlined-adornment-password">Answer</InputLabel>
-                    <Input
-                        id="outlined-adornment-password"
-                        type='text'
-                        value={answer}
-                        onChange={onChangeAnswer}
-                    />
-                    <label htmlFor="button-file">
-                        + Attach file
-                        <input className={style.containedButtonFile} id='button-file' type='file'></input>
-                    </label>
-                </FormControl>
+            <FormControl sx={{m: 0, width: '347px'}} variant="outlined">
+                <InputLabel sx={{marginLeft: '-14px'}} htmlFor="outlined-adornment-password">Answer</InputLabel>
+                <Input
+                    id="outlined-adornment-password"
+                    type='text'
+                    value={answer}
+                    onChange={onChangeAnswer}
+                />
+                <label htmlFor="button-file">
+                    + Attach file
+                    <input className={style.containedButtonFile} id='button-file' type='file'></input>
+                </label>
+            </FormControl>
 
-                <Box sx={{width: '100%', justifyContent: 'space-around', display: 'flex', marginTop: '81px'}}>
-                    <Button
-                        sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
-                        variant="contained"
-                        onClick={() => navigate(-1)}
-                    >
-                        Cancel
-                    </Button>
+            <Box sx={{width: '100%', justifyContent: 'space-around', display: 'flex', marginTop: '81px'}}>
+                <Button
+                    sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
+                    variant="contained"
+                    onClick={() => navigate(-1)}
+                >
+                    Cancel
+                </Button>
 
-                    <Button
-                        sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
-                        variant="contained"
-                        onClick={() => onCreateNewCard()}
-                    >
-                        Save
-                    </Button>
-                </Box>
-            </div>
+                <Button
+                    sx={{backgroundColor: '#21268F', width: '124px', borderRadius: '30px'}}
+                    variant="contained"
+                    onClick={() => onCreateNewCard()}
+                >
+                    Save
+                </Button>
+            </Box>
+        </div>
         </div>
     )
 });

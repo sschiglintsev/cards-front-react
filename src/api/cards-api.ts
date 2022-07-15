@@ -69,6 +69,6 @@ export const CardsApi = {
     },
 
     editCard(data: any) {
-        return instance.put('/cards/card', data);
+        return instance.put('/cards/card', {card:data});
     }
 }
