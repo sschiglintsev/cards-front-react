@@ -186,7 +186,7 @@ export const Cards = () => {
                                                     <StyledTableCell>Question</StyledTableCell>
                                                     <StyledTableCell align="right">Answer</StyledTableCell>
                                                     <StyledTableCell align="right">Last Update
-                                                        {lastUpdateValue === 0
+                                                        {sortCards === '0'
                                                             ? <ArrowDownwardIcon sx={{
                                                                 cursor: 'pointer',
                                                                 fontSize: 'medium'
