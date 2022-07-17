@@ -42,6 +42,7 @@ export const Cards = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const cards = useAppSelector(state => state.cards)
+    const idUser = useAppSelector(state => state.login._id)
 
     const rows = cards.cards
     const pageCount = cards.pageCount
@@ -108,10 +109,6 @@ export const Cards = () => {
     async function deleteCard (id: string)  {
         await dispatch(deleteCardTC(id))
         setIsDeleteCard(!isDeleteCard)
-    }
-
-    const editButton = (id: string) => {
-        console.log('edit')
     }
 
     // Back in Paks list
