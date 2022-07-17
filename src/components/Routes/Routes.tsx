@@ -1,17 +1,18 @@
 import React from 'react'
-import {Navigate, Route, Routes} from "react-router-dom";
-import {Main} from "../Main/Main";
-import {Login} from "../Login/Login";
-import {Error404} from "../Error404/Error404";
-import {NewPassword} from "../NewPassword/NewPassword";
-import {RecoveryPassword} from "../RecoveryPassword/RecoveryPassword";
-import {Registration} from "../Registration/Registration";
-import {Profile} from "../Profile/Profile";
-import {Test} from "../Test/Test";
-import {CheckEmail} from '../CheckEmail/CheckEmail';
-import {Cards} from "../Cards/Cards";
-import {EditCardInfo} from "../EditCardInfo/EditCardInfo";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Main } from "../Main/Main";
+import { Login } from "../Login/Login";
+import { Error404 } from "../Error404/Error404";
+import { NewPassword } from "../NewPassword/NewPassword";
+import { RecoveryPassword } from "../RecoveryPassword/RecoveryPassword";
+import { Registration } from "../Registration/Registration";
+import { Profile } from "../Profile/Profile";
+import { Test } from "../Test/Test";
+import { CheckEmail } from '../CheckEmail/CheckEmail';
+import { Cards } from "../Cards/Cards";
+import { EditCardInfo } from "../EditCardInfo/EditCardInfo";
 import { PacksList } from '../PacksList/PacksList';
+import LearnPage from '../Question/Question';
 
 export const PATH = {
     MAIN: '/main',
@@ -33,25 +34,28 @@ export const RoutesPage = () => {
     return (
         <div>
             <Routes>
-                <Route path={'/'} element={<Profile/>}/>
-                <Route path={PATH.MAIN} element={<Main/>}/>
-                <Route path={PATH.LOGIN} element={<Login/>}/>
+                <Route path={'/'} element={<Profile />} />
+                <Route path={PATH.MAIN} element={<Main />} />
+                <Route path={PATH.LOGIN} element={<Login />} />
                 <Route path={PATH.NEW_PASSWORD}>
-                    <Route path=":userToken" element={<NewPassword/>}/>
+                    <Route path=":userToken" element={<NewPassword />} />
                 </Route>
                 <Route path={PATH.ADD_NEW_CARD}>
-                    <Route path=":packId" element={<EditCardInfo/>}/>
+                    <Route path=":packId" element={<EditCardInfo />} />
                 </Route>
-                <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword/>}/>
-                <Route path={PATH.REGISTRATION} element={<Registration/>}/>
-                <Route path={PATH.PROFILE} element={<Profile/>}/>
-                <Route path={PATH.ERROR} element={<Error404/>}/>
-                <Route path={PATH.TEST} element={<Test/>}/>
-                <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>}/>
-                <Route path={PATH.PACKS_LIST} element={<PacksList/>}/>
-                <Route path="*" element={<Navigate to="/error404"/>}/>
+                <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword />} />
+                <Route path={PATH.REGISTRATION} element={<Registration />} />
+                <Route path={PATH.PROFILE} element={<Profile />} />
+                <Route path={PATH.ERROR} element={<Error404 />} />
+                <Route path={PATH.TEST} element={<Test />} />
+                <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+                <Route path={PATH.PACKS_LIST} element={<PacksList />} />
+                <Route path={PATH.CARD}>
+                    <Route path=':packId' element={<LearnPage />}/>
+                </Route>
+                <Route path="*" element={<Navigate to="/error404" />} />
                 <Route path={PATH.PROFILE_CARD}>
-                    <Route path=":cardsPack_id" element={<Cards/>}/>
+                    <Route path=":cardsPack_id" element={<Cards />} />
                 </Route>
             </Routes>
         </div>

@@ -9,6 +9,7 @@ import { addPackTC, deletePackTC, GetPacksAC, getPacksTC, PackType, SetPackNameA
 import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
+import { PATH } from '../Routes/Routes';
 
 
 
@@ -91,7 +92,7 @@ export const ProfileTable = React.memo(() => {
             renderCell: (params: any) => {
                 const onClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
-                    //*navigate();
+                    navigate(`${PATH.CARD}/${params.row.id}`);
                 }
 
                 return <Button onClick={onClick}>Learn</Button>
@@ -212,7 +213,7 @@ const PacksListTable = React.memo(() => {
                 
                 const onLearnClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
-                    //*navigate();
+                    navigate(`${PATH.CARD}/${params.row.id}`);
                 }
                 const onDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();

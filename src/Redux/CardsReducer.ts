@@ -1,4 +1,4 @@
-import {CardsApi, CardsParamsType, cardType} from "../api/cards-api";
+import {CardsApi, CardsGrade, CardsParamsType, cardType} from "../api/cards-api";
 import {AppThunk} from "./Store";
 import {Dispatch} from "redux";
 import {setIsLoadingAC} from "./AppReducer";
@@ -41,6 +41,8 @@ export const CardsReduser = (state: InitialStateType = initialState, action: Car
             return {...state, cards: [], namePack: '', pageCount: 0, page: 0}
         case "cards/ADD-NAME-PACK":
             return {...state, namePack: action.payload.name}
+        case "cards/SET-GRADE":
+            return {...state, cards: state.cards.map((card) => card._id === action.cardId ? {...card, grade: action.grade} : card)}
         default:
             return {...state}
     }
@@ -76,6 +78,14 @@ export const changeCardEditStatus = (cardId: string): changeCardEditStatusType =
     cardId
 } as const)
 
+export const setGradeAC = (grade: number, cardId: string) => ({
+    type: 'cards/SET-GRADE',
+    cardId,
+    grade
+} as const)
+
+type setGradeACType = ReturnType<typeof setGradeAC>
+
 type setCardsAСType = ReturnType<typeof setCardsAC>
 
 type addNamePackACType = ReturnType<typeof addNamePackAC>
@@ -93,6 +103,7 @@ type CardsActionSType =
     | changeCardEditStatusType
     | addNamePackACType
     | clearCardsACType
+    | setGradeACType
 
 export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispatch) => {
     dispatch(setIsLoadingAC(true))
@@ -105,6 +116,48 @@ export const setCardsTC = (data: CardsParamsType): AppThunk => (dispatch: Dispat
         .finally(() => {
             dispatch(setIsLoadingAC(false))
         })
+}
+
+export const getCardsTC = (id: string): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true))
+    try {
+        let data: CardsParamsType = {
+            cardAnswer: undefined,
+            cardQuestion: undefined, 
+            cardsPack_id: id,
+            min: 0,
+            max: 5,
+            sortCards: "0updated",
+            page: 1,
+            pageCount: undefined 
+        }
+        let result = await CardsApi.getAllCards(data);
+        console.log("aaaaa", result.data);
+        dispatch(clearCardsAC);
+        dispatch(setCardsAC(result.data.cards, result.data.page, result.data.pageCount, result.data.pageCount))
+        dispatch(setIsLoadingAC(false))
+    } catch (error: any) {
+        alert(error)
+        dispatch(setIsLoadingAC(false))
+    }
+    
+}
+export const setGradeTC = (grade: number, card_id: string): AppThunk => async (dispatch, getState) => {
+    dispatch(setIsLoadingAC(true))
+    try {
+        let data: CardsGrade = {
+            grade,
+            card_id
+        }
+        let result = await CardsApi.setGrade(data);
+        console.log("grade", result.data);
+        dispatch(setGradeAC(result.data.updatedGrade.grade, result.data.updatedGrade.card_id))
+        dispatch(setIsLoadingAC(false))
+    } catch (error: any) {
+        alert(error)
+        dispatch(setIsLoadingAC(false))
+    }
+    
 }
 
 export const clearCardsTC = (): AppThunk => (dispatch: Dispatch) => {
