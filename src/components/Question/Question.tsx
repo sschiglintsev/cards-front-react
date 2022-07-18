@@ -99,7 +99,7 @@ const LearnPage = () => {
 
             {isChecked && (
                 <>
-                    <div className={s.QuestionAnswer}><b>Answer:</b>{card.answer}</div>
+                    <div className={s.QuestionAnswer}><b>Answer:</b> {card.answer}</div>
                     <div className={s.QuestionAnswer}><b>Rate yourself:</b></div>
                     <FormControl>
                         <RadioGroup
