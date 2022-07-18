@@ -5,9 +5,12 @@ import TableRow from "@mui/material/TableRow";
 import tableCellClasses from "@mui/material/TableCell/tableCellClasses";
 import styled from "@mui/material/styles/styled";
 import Button from "@mui/material/Button";
-import {BasicModal} from "../../common/Modal/Modal";
 import Rating from "@mui/material/Rating";
 import {useAppSelector} from "../../../Redux/hooks";
+import {ModalEditCard} from "../ModalEditCard/ModalEditCard";
+import {BasicModal} from "../../common/Modal/BasicModal";
+import {ButtonDelete} from "./ButtonDelete";
+import {ButtonEdit} from "./ButtonEdit";
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -40,14 +43,21 @@ type PropsType = {
         grade: number
         _id: string
         isEditCard: boolean
+        user_id:string
     }
     deleteCard: (id: string) => void
 }
 
 export const Card: FC<PropsType> = ({card, deleteCard}) => {
-    const {question, answer, updated, grade, _id, isEditCard} = card;
+    const {question, answer, updated, grade, _id, user_id} = card;
+    const idUser = useAppSelector(state => state.login._id)
+    let isMyActive = false
 
-    const isMyActive = useAppSelector(state => state.profile.isMyActive)
+    if (idUser===user_id && user_id!==undefined) {
+        isMyActive = true
+     } else  { isMyActive = false}
+
+
 
     return (
         <>
@@ -61,16 +71,8 @@ export const Card: FC<PropsType> = ({card, deleteCard}) => {
                 {isMyActive
                     ?<StyledTableCell align="right">
                         <div className={style_.buttons}>
-                            <Button onClick={() => deleteCard(_id)}
-                                    variant="outlined"
-                                    color="error"
-                                    sx={{
-                                        width: 30,
-                                        height: 25,
-                                    }}>
-                                Delete
-                            </Button>
-                            <BasicModal question={question} answer={answer} _id={_id}/>
+                            <ButtonDelete id={_id} deleteCard={deleteCard}/>
+                            <ButtonEdit question={question} answer={answer} id={_id}/>
                         </div>
                     </StyledTableCell>
                 :<></>}
