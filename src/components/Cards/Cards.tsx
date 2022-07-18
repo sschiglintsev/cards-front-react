@@ -42,7 +42,7 @@ export const Cards = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const cards = useAppSelector(state => state.cards)
-    const idUser = useAppSelector(state => state.login._id)
+    const isLoading = useAppSelector(state => state.app.isLoading)
 
     const rows = cards.cards
     const pageCount = cards.pageCount
@@ -173,43 +173,46 @@ export const Cards = () => {
 
                                 </Box>
                             </div>
+                            {isLoading
+                            ? <></>
+                            : <div className={style.TableContainer}>
+                                    <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+                                        {cardsTotalCount > 0
+                                            ? <Table sx={{minWidth: 700}} aria-label="customized table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <StyledTableCell>Question</StyledTableCell>
+                                                        <StyledTableCell align="right">Answer</StyledTableCell>
+                                                        <StyledTableCell align="right">Last Update
+                                                            {sortCardsUpdated === '0'
+                                                                ? <ArrowDownwardIcon sx={{
+                                                                    cursor: 'pointer',
+                                                                    fontSize: 'medium'
+                                                                }} onClick={() => setSortCardsUpdated('1')}/>
+                                                                : <ArrowUpwardIcon sx={{
+                                                                    cursor: 'pointer',
+                                                                    fontSize: 'medium'
+                                                                }} onClick={() => setSortCardsUpdated('0')}/>
+                                                            }
+                                                        </StyledTableCell>
+                                                        <StyledTableCell align="right">Grade</StyledTableCell>
+                                                        <StyledTableCell align="right">Actions</StyledTableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {rows.map((card) => (
+                                                        <Card card={card} deleteCard={deleteCard} key={card._id}/>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                            : <></>
+                                        }
+                                    </TableContainer>
+                                </div>
+                            }
 
-                            <div className={style.TableContainer}>
-                                <TableContainer component={Paper}>
-                                    {cardsTotalCount > 0
-                                        ? <Table sx={{minWidth: 700}} aria-label="customized table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <StyledTableCell>Question</StyledTableCell>
-                                                    <StyledTableCell align="right">Answer</StyledTableCell>
-                                                    <StyledTableCell align="right">Last Update
-                                                        {sortCardsUpdated === '0'
-                                                            ? <ArrowDownwardIcon sx={{
-                                                                cursor: 'pointer',
-                                                                fontSize: 'medium'
-                                                            }} onClick={() => setSortCardsUpdated('1')}/>
-                                                            : <ArrowUpwardIcon sx={{
-                                                                cursor: 'pointer',
-                                                                fontSize: 'medium'
-                                                            }} onClick={() => setSortCardsUpdated('0')}/>
-                                                        }
-                                                    </StyledTableCell>
-                                                    <StyledTableCell align="right">Grade</StyledTableCell>
-                                                    <StyledTableCell align="right">Actions</StyledTableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {rows.map((card) => (
-                                                    <Card card={card} deleteCard={deleteCard} key={card._id}/>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                        : <></>
-                                    }
-                                </TableContainer>
-                            </div>
 
-                            {cardsTotalCount > 0
+                            {!isLoading && cardsTotalCount > 0
                                 ? <div className={style.pagination}>
                                     <Stack spacing={2}>
                                         <Pagination
