@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+
+.Card {
+    width: 613px;
+    height: fit-content;
+    min-height: 300px;
+    border-radius: 8px;
+    background-color: #fff;
+    margin: 0 auto;
+    margin-top: 110px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2d2e46;
+    padding: 10px 20px;
+}
+
+.Heading {
+    text-align: center;
+    font-size: 22px;
+    line-height: 33px;
+}
+
+.QuestionAnswer {
+    margin-top: 5px;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 19px;
+    color: #2d2e46;
+}
+
+.Wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.ShowAnswerBtn {
+    display: inline-block;
+    margin: 15px auto;
+    width: 187px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #21268F;
+    color: #ECECF9;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    box-shadow: 0px 4px 18px rgba(33, 38, 143, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+}
+.CancelBtn {
+    display: inline-block;
+    margin: 15px auto;
+    width: 120px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #D7D8EF;
+    color: #21268F;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    box-shadow: 0px 4px 18px rgba(33, 38, 143, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+}
+
+.Grade {
+    display: block;
+    margin-top: 10px;
+    height: 36px;
+    width: 150px;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    background-color: #D7D8EF;
+    border-radius: 30px;
+}
+.Grade {
+    display: block;
+    margin-top: 10px;
+    height: 36px;
+    width: 150px;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    background-color: #D7D8EF;
+    border-radius: 30px;
+}
+
+.NextButton {
+    display: block;
+    margin: 10px auto;
+    width: 187px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #21268F;
+    color: #ECECF9;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    box-shadow: 0px 4px 18px rgba(33, 38, 143, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+}

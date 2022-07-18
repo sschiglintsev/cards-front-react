@@ -52,12 +52,19 @@ type ResponseType = {
     tokenDeathTime:number
 }
 
-
+export type CardsGrade = {
+    grade: number,
+    card_id: string
+}
 
 
 export const CardsApi = {
     getCards(data: CardsParamsType) {
         return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id + '&page=' + data.page + '&cardAnswer=' +data.cardAnswer + '&cardQuestion=' +data.cardQuestion + '&sortCards=' +data.sortCards);
+    },
+
+    getAllCards(data: CardsParamsType) {
+        return instance.get<CardsParamsType, AxiosResponse<ResponseType>>('/cards/card' + '?cardsPack_id='+ data.cardsPack_id + '&pageCount=' + 200);
     },
 
     deleteCard(id: string) {
@@ -70,5 +77,9 @@ export const CardsApi = {
 
     editCard(data: any) {
         return instance.put('/cards/card', {card:data});
+    },
+
+    setGrade(data: CardsGrade) {
+        return instance.put('/cards/grade', data);
     }
 }

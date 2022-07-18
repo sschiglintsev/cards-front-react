@@ -44,16 +44,12 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
             return { ...state, packs: action.packs, totalCount: action.totalCount }
         }
         case 'PROFILE/Set-MinMax': {
-            console.log(action.value);
-
             return { ...state, minMax: action.value }
         }
         case 'PROFILE/Set-PackName': {
-
             return { ...state, packName: action.packName }
         }
         case 'PROFILE/Set-Is-My-Active': {
-
             return { ...state, isMyActive: action.isActive }
         }
         default:

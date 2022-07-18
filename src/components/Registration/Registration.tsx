@@ -52,7 +52,6 @@ export const Registration = React.memo(() => {
         },
         onSubmit: values => {
             let res = { email: values.email, password: values.password }
-            console.log(res)
             dispatch(registerUserTC(res))
             formik.resetForm();
         },

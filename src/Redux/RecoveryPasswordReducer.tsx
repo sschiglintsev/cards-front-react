@@ -45,7 +45,6 @@ export const recoveryPasswordTC = (email: string) => (dispatch: Dispatch) => {
     dispatch(changeIsLoading(true));
     recoveryApi.recoveryPassword(email)
         .then(res => {
-            console.log(res);
             dispatch(recoveryPasswordAC(res.info));
             dispatch(changeIsLoading(false));
         })

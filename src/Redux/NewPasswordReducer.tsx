@@ -45,7 +45,6 @@ export const newPasswordTC = (data: NewPasswordData) => (dispatch: Dispatch) => 
     dispatch(changeIsLoading(true));
     recoveryApi.setNewPassword(data)
         .then(res => {
-            console.log(res);
             dispatch(setNewPasswordAC(res.info));
             dispatch(changeIsLoading(false));
         })
