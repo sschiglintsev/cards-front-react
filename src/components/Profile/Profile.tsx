@@ -8,10 +8,12 @@ import user from './user.png'
 import SliderComponent from '../Slider/Slider';
 import PacksListTable, { ProfileTable } from '../Table/Table';
 import { Button } from '@mui/material';
+import { InputTypeFile } from '../common/InputTypeFile/InputTypeFile';
 
 export const Profile = React.memo(() => {
     const dispatch = useAppDispatch();
     const profile = useAppSelector(state => state.login);
+    console.log(profile)
     const isLoggedIn = profile.isLoggedIn;
 
     const logout = () => {
@@ -27,6 +29,7 @@ export const Profile = React.memo(() => {
             <div className={s.ProfileInfo}>
                 <div className={s.Description}>
                     <img src={profile.avatar ? profile.avatar : user}></img>
+                    <InputTypeFile />
                     <div>{profile.email}</div>
                 </div>
                 <div className={s.SliderBlock}>
