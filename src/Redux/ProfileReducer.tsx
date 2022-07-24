@@ -28,6 +28,7 @@ export type InitialStateType = {
     totalCount: number
     packName: string
     isMyActive: boolean
+    sortPacks: string
 }
 
 const initialState: InitialStateType = {
@@ -35,7 +36,8 @@ const initialState: InitialStateType = {
     minMax: [0, 130],
     totalCount: 1,
     packName: "", 
-    isMyActive: false
+    isMyActive: false,
+    sortPacks: ""
 }
 
 export const ProfileReducer = (state: InitialStateType = initialState, action: ProfileActionsType): InitialStateType => {
@@ -56,6 +58,10 @@ export const ProfileReducer = (state: InitialStateType = initialState, action: P
 
             return { ...state, isMyActive: action.isActive }
         }
+        case "PROFILE/Set-Sort-Packs": {
+
+            return { ...state, sortPacks: action.sort}
+        }
         default:
             return { ...state }
     }
@@ -70,7 +76,7 @@ export const getPacksTC = (page: number): AppThunk => async (dispatch, getState)
             packName: state.profile.packName,
             min: state.profile.minMax[0],
             max: state.profile.minMax[1] !== 0 ? state.profile.minMax[1] : 130,
-            sortPacks: "",
+            sortPacks: state.profile.sortPacks,
             page: page,
             pageCount: 8,
             user_id: state.profile.isMyActive ? state.login._id : "",
@@ -143,7 +149,11 @@ export const SetIsMyActiveAC = (isActive: boolean) => ({ type: 'PROFILE/Set-Is-M
 
 
 export type SetIsMyActiveActionType = ReturnType<typeof SetIsMyActiveAC>
+export const SetSortPacksAC = (sort: string) => ({ type: 'PROFILE/Set-Sort-Packs', sort} as const)
+
+
+export type SetSortPacksActionType = ReturnType<typeof SetSortPacksAC>
 
 
 export type ProfileActionsType =
-    GetPacksActionType | SetMinMaxActionType | SetPackNameActionType | SetIsMyActiveActionType;
+    GetPacksActionType | SetMinMaxActionType | SetPackNameActionType | SetIsMyActiveActionType | SetSortPacksActionType;

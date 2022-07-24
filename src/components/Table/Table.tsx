@@ -5,11 +5,13 @@ import { Button, Input, InputAdornment, Pagination } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { packsAPI } from '../../api/packs-api';
 import SearchIcon from '@mui/icons-material/Search';
-import { addPackTC, deletePackTC, GetPacksAC, getPacksTC, PackType, SetPackNameAC } from '../../Redux/ProfileReducer';
+import { addPackTC, deletePackTC, GetPacksAC, getPacksTC, PackType, SetIsMyActiveAC, SetPackNameAC, SetSortPacksAC } from '../../Redux/ProfileReducer';
 import useDebounce, { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { addNamePackAC } from "../../Redux/CardsReducer";
 import { PATH } from '../Routes/Routes';
+import IconButton from '@mui/material/IconButton';
+import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 
 
 
@@ -22,17 +24,21 @@ export const ProfileTable = React.memo(() => {
     let totalCount = useAppSelector(state => state.profile.totalCount);
     let minMax = useAppSelector(state => state.profile.minMax);
     let packName = useAppSelector(state => state.profile.packName);
+    let sortPacks = useAppSelector(state => state.profile.sortPacks);
 
     let pageCount = Math.ceil(totalCount / 8);
-    let currentUserId = useAppSelector(state => state.login._id);
 
     useEffect(() => {
-        dispatch(getPacksTC(page + 1))
-    }, [page, dispatch, minMax]);
+        dispatch(SetIsMyActiveAC(false));
+    }, [])
+
+    useEffect(() => {
+        dispatch(getPacksTC(page + 1));
+    }, [page, dispatch, minMax, sortPacks]);
 
     useEffect(() => {
         setPage(0);
-    }, [minMax])
+    }, [minMax, sortPacks])
 
     let navigate = useNavigate();
 
@@ -59,7 +65,9 @@ export const ProfileTable = React.memo(() => {
         dispatch(addPackTC("New pack"));
     }
 
-
+    const [isCardsArrowUp, setIsCardsArrowUp] = useState(false);
+    const [isNameArrowUp, setIsNameArrowUp] = useState(false);
+    const [isDateArrowUp, setIsDateArrowUp] = useState(false);
 
     const columns: GridColDef[] = [
         {
@@ -72,15 +80,73 @@ export const ProfileTable = React.memo(() => {
                     dispatch(addNamePackAC(params.row.name))
                 }
                 return <div style={{ cursor: "pointer" }} onClick={onClick}>{params.row.name}</div>
+            },
+            sortable: false,
+            hideSortIcons: true,
+            disableColumnMenu: true,
+            renderHeader: (params) => {
+                return <>
+                    {"Name"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isNameArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "packName"));
+                            setIsNameArrowUp(!isNameArrowUp);
+                            setIsCardsArrowUp(false);
+                            setIsDateArrowUp(false);
+                        }}>
+                        {isNameArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
             }
         },
-        { field: 'cards', headerName: 'Cards', width: 110 },
-        { field: 'lastUpdated', headerName: 'Last Updated', width: 150 },
+        {
+            field: 'cards',
+            headerName: 'Cards',
+            width: 110,
+            sortable: false,
+            hideSortIcons: true,
+            disableColumnMenu: true,
+            renderHeader: (params) => {
+                return <>
+                    {"Cards"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isCardsArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "cardsCount"));
+                            setIsNameArrowUp(false);
+                            setIsCardsArrowUp(!isCardsArrowUp);
+                            setIsDateArrowUp(false);
+                        }}>
+                        {isCardsArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
+            }
+        },
+        {
+            field: 'lastUpdated', headerName: 'Last Updated', width: 150, sortable: false,
+            hideSortIcons: true,
+            disableColumnMenu: true,
+            renderHeader: (params) => {
+                return <>
+                    {"Updated"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isDateArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "updated"));
+                            setIsNameArrowUp(false);
+                            setIsCardsArrowUp(false);
+                            setIsDateArrowUp(!isDateArrowUp);
+                        }}>
+                        {isDateArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
+            }
+        },
         {
             field: 'createdBy',
             headerName: 'Created by',
             type: 'string',
-            width: 110,
+            width: 110, sortable: false,
+            hideSortIcons: true,
+            disableColumnMenu: true,
         },
         {
             field: 'actions',
@@ -89,6 +155,8 @@ export const ProfileTable = React.memo(() => {
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
             width: 80,
+            hideSortIcons: true,
+            disableColumnMenu: true,
             renderCell: (params: any) => {
                 const onClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
@@ -135,23 +203,25 @@ export const ProfileTable = React.memo(() => {
 const PacksListTable = React.memo(() => {
 
     const dispatch = useAppDispatch();
+
     let [page, setPage] = useState(0);
 
     let packs = useAppSelector(state => state.profile.packs);
     let totalCount = useAppSelector(state => state.profile.totalCount);
     let minMax = useAppSelector(state => state.profile.minMax);
     let packName = useAppSelector(state => state.profile.packName);
-
-    let pageCount = Math.ceil(totalCount / 8);
+    let sortPacks = useAppSelector(state => state.profile.sortPacks);
     let currentUserId = useAppSelector(state => state.login._id);
 
+    let pageCount = Math.ceil(totalCount / 8);
+
     useEffect(() => {
-        dispatch(getPacksTC(page + 1))
-    }, [page, dispatch, minMax]);
+        dispatch(getPacksTC(page + 1));
+    }, [page, dispatch, minMax, sortPacks]);
 
     useEffect(() => {
         setPage(0);
-    }, [minMax])
+    }, [minMax, sortPacks])
 
     let navigate = useNavigate();
 
@@ -165,8 +235,6 @@ const PacksListTable = React.memo(() => {
     useEffect(
         () => {
             if (debouncedSearchTerm) {
-                // setIsSearching(true);
-                console.log(debouncedSearchTerm)
                 dispatch(getPacksTC(page));
             }
         },
@@ -178,11 +246,14 @@ const PacksListTable = React.memo(() => {
         dispatch(addPackTC("New pack"));
     }
 
+    const [isCardsArrowUp, setIsCardsArrowUp] = useState(false);
+    const [isNameArrowUp, setIsNameArrowUp] = useState(false);
+    const [isDateArrowUp, setIsDateArrowUp] = useState(false);
 
 
     const columns: GridColDef[] = [
         {
-            field: 'name', headerName: 'Name', width: 185,
+            field: 'name', headerName: 'Name', width: 175, sortable: false,
             renderCell: (params) => {
                 const onClick = (e: MouseEvent<HTMLDivElement>) => {
                     e.stopPropagation();
@@ -191,26 +262,80 @@ const PacksListTable = React.memo(() => {
                     dispatch(addNamePackAC(params.row.name))
                 }
                 return <div style={{ cursor: "pointer" }} onClick={onClick}>{params.row.name}</div>
+            },
+            hideSortIcons: true,
+            disableColumnMenu: true,
+            renderHeader: (params) => {
+                return <>
+                    {"Name"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isNameArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "packName"));
+                            setIsNameArrowUp(!isNameArrowUp);
+                            setIsCardsArrowUp(false);
+                            setIsDateArrowUp(false);
+                        }}>
+                        {isNameArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
             }
         },
-        { field: 'cards', headerName: 'Cards', width: 75 },
-        { field: 'lastUpdated', headerName: 'Last Updated', width: 120 },
+        {
+            field: 'cards', headerName: 'Cards', width: 95, hideSortIcons: true,
+            disableColumnMenu: true, sortable: false,
+            renderHeader: (params) => {
+                return <>
+                    {"Cards"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isCardsArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "cardsCount"));
+                            setIsNameArrowUp(false);
+                            setIsCardsArrowUp(!isCardsArrowUp);
+                            setIsDateArrowUp(false);
+                        }}>
+                        {isCardsArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
+            }
+        },
+        {
+            field: 'lastUpdated', headerName: 'Last Updated', width: 110, hideSortIcons: true,
+            disableColumnMenu: true, sortable: false,
+            renderHeader: (params) => {
+                return <>
+                    {"Updated"} <IconButton style={{ float: "right" }}
+                        onClick={() => {
+                            let num = isDateArrowUp ? 1 : 0;
+                            dispatch(SetSortPacksAC(num + "updated"));
+                            setIsNameArrowUp(false);
+                            setIsCardsArrowUp(false);
+                            setIsDateArrowUp(!isDateArrowUp);
+                        }}>
+                        {isDateArrowUp ? <ArrowUpward /> : <ArrowDownward />}
+                    </IconButton>
+                </>
+            }
+        },
         {
             field: 'createdBy',
             headerName: 'Created by',
             type: 'string',
             width: 120,
+            hideSortIcons: true,
+            disableColumnMenu: true,
+            sortable: false
         },
         {
             field: 'actions',
             headerName: 'Actions',
-
             description: 'This column has a value getter and is not sortable.',
             sortable: false,
             width: 160,
+            hideSortIcons: true,
+            disableColumnMenu: true,
             renderCell: (params: any) => {
                 let isVisible = params.row.userId === currentUserId;
-                
+
                 const onLearnClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     navigate(`${PATH.CARD}/${params.row.id}`);
@@ -227,13 +352,13 @@ const PacksListTable = React.memo(() => {
                 }
 
                 return <>
-                    <button onClick={onDeleteClick} 
-                    className={s.DeleteButton}
-                    style={{visibility: isVisible ? "visible" : "hidden"}}
+                    <button onClick={onDeleteClick}
+                        className={s.DeleteButton}
+                        style={{ visibility: isVisible ? "visible" : "hidden" }}
                     >Delete</button>
-                    <button onClick={onEditClick} 
-                    className={s.Button}
-                    style={{visibility: isVisible ? "visible" : "hidden"}}
+                    <button onClick={onEditClick}
+                        className={s.Button}
+                        style={{ visibility: isVisible ? "visible" : "hidden" }}
                     >Edit</button>
                     <button onClick={onLearnClick} className={s.Button}>Learn</button>
                 </>
@@ -268,6 +393,7 @@ const PacksListTable = React.memo(() => {
                     componentsProps={{
                         pagination: { count: pageCount, page: page, setPage: setPage }
                     }}
+
                 />
             </div>
         </div>

@@ -86,7 +86,7 @@ const LearnPage = () => {
     };
 
     return (
-        <div className={s.Card} style={card.answer.length > 2000 ? {width: "1250px"} : {}}>
+        <div className={s.Card}>
             <div className={s.Heading}>LearnPage</div>
 
             <div className={s.QuestionAnswer}><b>Question:</b> {card.question}</div>
@@ -99,7 +99,7 @@ const LearnPage = () => {
 
             {isChecked && (
                 <>
-                    <div className={s.QuestionAnswer}><b>Answer:</b> {card.answer}</div>
+                    <div className={card.answer.length > 520 ? s.ScrollAnswer : s.Answer}><b>Answer:</b> {card.answer}</div>
                     <div className={s.QuestionAnswer}><b>Rate yourself:</b></div>
                     <FormControl>
                         <RadioGroup
@@ -110,9 +110,7 @@ const LearnPage = () => {
                             onChange={handleChange}
                         >
                             {grades.map((g, i) => (
-                                // <button className={s.Grade} key={'grade-' + i} onClick={() => {
-                                // }}>{g}</button>
-                                <FormControlLabel value={i + 1} control={<Radio />} label={`${g}`} key={i + 1} />
+                                <FormControlLabel style={{height: "18px"}} value={i + 1} control={<Radio />} label={`${g}`} key={i + 1} />
                             ))}
                         </RadioGroup>
                     </FormControl>
