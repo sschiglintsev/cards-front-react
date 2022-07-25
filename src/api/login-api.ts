@@ -33,5 +33,10 @@ export const LoginApi = {
     },
     authMe(){
         return instance.post('/auth/me', {});
+    },
+    changeAvatar(avatar: string){
+        return instance.put('/auth/me', {
+            avatar,
+        })
     }
 }
