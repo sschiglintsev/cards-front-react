@@ -12,6 +12,9 @@ import { addNamePackAC } from "../../Redux/CardsReducer";
 import { PATH } from '../Routes/Routes';
 import IconButton from '@mui/material/IconButton';
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
+import { ButtonAdd } from './ButtonAdd/ButtonAdd';
+import { ButtonDelete } from './ButtonDelete/ButtonDelete';
+
 
 
 
@@ -237,11 +240,6 @@ const PacksListTable = React.memo(() => {
         [debouncedSearchTerm]
     );
 
-    function onAddClickHandler() {
-        //thunk
-        dispatch(addPackTC("New pack"));
-    }
-
     const [isCardsArrowUp, setIsCardsArrowUp] = useState(false);
     const [isNameArrowUp, setIsNameArrowUp] = useState(false);
     const [isDateArrowUp, setIsDateArrowUp] = useState(false);
@@ -330,16 +328,12 @@ const PacksListTable = React.memo(() => {
             hideSortIcons: true,
             disableColumnMenu: true,
             renderCell: (params: any) => {
+                
                 let isVisible = params.row.userId === currentUserId;
 
                 const onLearnClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     navigate(`${PATH.CARD}/${params.row.id}`);
-                }
-                const onDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    dispatch(deletePackTC(params.row.id));
-                    setPage(0);
                 }
                 const onEditClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
@@ -348,10 +342,7 @@ const PacksListTable = React.memo(() => {
                 }
 
                 return <>
-                    <button onClick={onDeleteClick}
-                        className={s.DeleteButton}
-                        style={{ visibility: isVisible ? "visible" : "hidden" }}
-                    >Delete</button>
+                    <ButtonDelete isVisible={isVisible} title={params.row.name} id={params.row.id} setPage={() => setPage(0)}/>
                     <button onClick={onEditClick}
                         className={s.Button}
                         style={{ visibility: isVisible ? "visible" : "hidden" }}
@@ -376,7 +367,7 @@ const PacksListTable = React.memo(() => {
                 }
                 onChange={onChangeHandler}
             />
-            <Button variant='contained' color='primary' sx={{ borderRadius: "30px" }} onClick={onAddClickHandler}>Add new pack</Button>
+            <ButtonAdd/>
             <div style={{ height: 535.5, width: '100%', paddingTop: 10 }}>
                 <DataGrid
                     rows={rows}
