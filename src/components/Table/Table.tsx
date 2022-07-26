@@ -337,7 +337,9 @@ const PacksListTable = React.memo(() => {
                 }
                 const onEditClick = (e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
-                    //*modal + dispatch tc;
+                    navigate(`/profile/card/${params.id}`);
+                    // @ts-ignore
+                    dispatch(addNamePackAC(params.row.name))
                     setPage(0);
                 }
 
