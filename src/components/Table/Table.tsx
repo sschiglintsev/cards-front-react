@@ -72,15 +72,6 @@ export const ProfileTable = React.memo(() => {
     const columns: GridColDef[] = [
         {
             field: 'name', headerName: 'Name', width: 210,
-            renderCell: (params) => {
-                const onClick = (e: MouseEvent<HTMLDivElement>) => {
-                    e.stopPropagation();
-                    navigate(`/profile/card/${params.id}`);
-                    // @ts-ignore
-                    dispatch(addNamePackAC(params.row.name))
-                }
-                return <div style={{ cursor: "pointer" }} onClick={onClick}>{params.row.name}</div>
-            },
             sortable: false,
             hideSortIcons: true,
             disableColumnMenu: true,
@@ -248,15 +239,6 @@ const PacksListTable = React.memo(() => {
     const columns: GridColDef[] = [
         {
             field: 'name', headerName: 'Name', width: 175, sortable: false,
-            renderCell: (params) => {
-                const onClick = (e: MouseEvent<HTMLDivElement>) => {
-                    e.stopPropagation();
-                    navigate(`/profile/card/${params.id}`);
-                    // @ts-ignore
-                    dispatch(addNamePackAC(params.row.name))
-                }
-                return <div style={{ cursor: "pointer" }} onClick={onClick}>{params.row.name}</div>
-            },
             hideSortIcons: true,
             disableColumnMenu: true,
             renderHeader: (params) => {
