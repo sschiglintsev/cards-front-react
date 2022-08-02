@@ -7,6 +7,7 @@ import {AuthMeTC, loginTC} from "./Redux/LoginReducer";
 import {useAppDispatch, useAppSelector} from "./Redux/hooks";
 import {Navigate} from "react-router";
 import {LinearProgress} from "@mui/material";
+import { MainProfile } from './components/MainProfile/MainProfile';
 
 
 function App() {

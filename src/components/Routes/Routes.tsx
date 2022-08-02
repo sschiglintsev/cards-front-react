@@ -13,6 +13,7 @@ import { Cards } from "../Cards/Cards";
 import { EditCardInfo } from "../EditCardInfo/EditCardInfo";
 import { PacksList } from '../PacksList/PacksList';
 import LearnPage from '../Question/Question';
+import { MainProfile } from '../MainProfile/MainProfile';
 
 export const PATH = {
     MAIN: '/main',
@@ -45,7 +46,8 @@ export const RoutesPage = () => {
                 </Route>
                 <Route path={PATH.RECOVERY_PASSWORD} element={<RecoveryPassword />} />
                 <Route path={PATH.REGISTRATION} element={<Registration />} />
-                <Route path={PATH.PROFILE} element={<Profile />} />
+                {/* <Route path={PATH.PROFILE} element={<Profile />} /> */}
+                <Route path={PATH.PROFILE} element={<MainProfile />} />
                 <Route path={PATH.ERROR} element={<Error404 />} />
                 <Route path={PATH.TEST} element={<Test />} />
                 <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
